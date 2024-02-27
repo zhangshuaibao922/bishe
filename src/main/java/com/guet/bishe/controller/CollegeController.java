@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
  /**
  * 学院;(college)表控制层
- * @author : http://www.chiner.pro
+ * @author : cardo
  * @date : 2024-2-27
  */
 @Api(tags = "学院对象功能接口")

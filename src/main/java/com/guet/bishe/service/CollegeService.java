@@ -6,7 +6,7 @@ import com.guet.bishe.entity.College;
 
 /**
  * 学院;(college)表服务接口
- * @author : http://www.chiner.pro
+ * @author : cardo
  * @date : 2024-2-27
  */
 public interface CollegeService{

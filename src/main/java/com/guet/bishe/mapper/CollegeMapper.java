@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
 * 学院;(college)表数据库访问层
-* @author : http://www.chiner.pro
+* @author : cardo
 * @date : 2024-2-27
 */
 @Mapper
