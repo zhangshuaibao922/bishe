@@ -1,6 +1,10 @@
 package com.guet.bishe.controller;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.guet.bishe.entity.College;
+import com.guet.bishe.service.CollegeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +29,13 @@ public class CollegeController{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param collegeId 学院id
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
     @GetMapping("{id}")
-    public ResponseEntity<College> queryById(Integer id){
-        return ResponseEntity.ok(collegeService.queryById(id));
+    public ResponseEntity<College> queryById(String collegeId){
+        return ResponseEntity.ok(collegeService.queryByCollegeId(collegeId));
     }
     
     /** 
@@ -49,7 +53,7 @@ public class CollegeController{
         long size = pageRequest.getPageSize();
         //2.分页查询
         /*把Mybatis的分页对象做封装转换，MP的分页对象上有一些SQL敏感信息，还是通过spring的分页模型来封装数据吧*/
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<College> pageResult = collegeService.paginQuery(college, current,size);
+        Page<College> pageResult = collegeService.paginQuery(college, current,size);
         //3. 分页结果组装
         List<College> dataList = pageResult.getRecords();
         long total = pageResult.getTotal();
@@ -84,12 +88,12 @@ public class CollegeController{
     /** 
      * 通过主键删除数据
      *
-     * @param id 主键
+     * @param collegeId 主键
      * @return 是否成功
      */
     @ApiOperation("通过主键删除数据")
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id){
-        return ResponseEntity.ok(collegeService.deleteById(id));
+    public ResponseEntity<Boolean> deleteById(String collegeId){
+        return ResponseEntity.ok(collegeService.deleteByCollegeId(collegeId));
     }
 }

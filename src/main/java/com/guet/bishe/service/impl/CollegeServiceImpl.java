@@ -42,19 +42,7 @@ public class CollegeServiceImpl implements CollegeService {
      */
     public Page<College> paginQuery(College college, long current, long size){
         //1. 构建动态查询条件
-        LambdaQueryWrapper<College> queryWrapper = new LambdaQueryWrapper<>();
-        if(StrUtil.isNotBlank(college.getCollegeId())){
-            queryWrapper.eq(College::getCollegeId, college.getCollegeId());
-        }
-        if(StrUtil.isNotBlank(college.getCollegeName())){
-            queryWrapper.eq(College::getCollegeName, college.getCollegeName());
-        }
-        if(StrUtil.isNotBlank(college.getCreateTime())){
-            queryWrapper.eq(College::getCreateTime, college.getCreateTime());
-        }
-        if(StrUtil.isNotBlank(college.getUpdateTime())){
-            queryWrapper.eq(College::getUpdateTime, college.getUpdateTime());
-        }
+        LambdaUpdateChainWrapper<College> queryWrapper = queryConditions(college);
         //2. 执行分页查询
         Page<College> pagin = new Page<>(current , size , true);
         IPage<College> selectResult = collegeMapper.selectByPage(pagin , queryWrapper);
@@ -84,19 +72,8 @@ public class CollegeServiceImpl implements CollegeService {
      */
     public College update(College college){
         //1. 根据条件动态更新
-        LambdaUpdateChainWrapper<College> chainWrapper = new LambdaUpdateChainWrapper<College>(collegeMapper);
-        if(StrUtil.isNotBlank(college.getCollegeId())){
-            chainWrapper.eq(College::getCollegeId, college.getCollegeId());
-        }
-        if(StrUtil.isNotBlank(college.getCollegeName())){
-            chainWrapper.eq(College::getCollegeName, college.getCollegeName());
-        }
-        if(StrUtil.isNotBlank(college.getCreateTime())){
-            chainWrapper.eq(College::getCreateTime, college.getCreateTime());
-        }
-        if(StrUtil.isNotBlank(college.getUpdateTime())){
-            chainWrapper.eq(College::getUpdateTime, college.getUpdateTime());
-        }
+
+        LambdaUpdateChainWrapper<College> chainWrapper = queryConditions(college);
         //2. 设置主键，并更新
         chainWrapper.set(College::getId, college.getId());
         boolean ret = chainWrapper.update();
@@ -118,5 +95,22 @@ public class CollegeServiceImpl implements CollegeService {
         LambdaQueryWrapper<College> collegeLambdaQueryWrapper = new LambdaQueryWrapper<>();
         int delete = collegeMapper.delete(collegeLambdaQueryWrapper.eq(College::getCollegeId, collegeId));
         return delete > 0;
+    }
+
+    public LambdaUpdateChainWrapper<College>  queryConditions(College college){
+        LambdaUpdateChainWrapper<College> chainWrapper = new LambdaUpdateChainWrapper<College>(collegeMapper);
+        if(StrUtil.isNotBlank(college.getCollegeId())){
+            chainWrapper.eq(College::getCollegeId, college.getCollegeId());
+        }
+        if(StrUtil.isNotBlank(college.getCollegeName())){
+            chainWrapper.eq(College::getCollegeName, college.getCollegeName());
+        }
+        if(StrUtil.isNotBlank(college.getCreateTime())){
+            chainWrapper.eq(College::getCreateTime, college.getCreateTime());
+        }
+        if(StrUtil.isNotBlank(college.getUpdateTime())){
+            chainWrapper.eq(College::getUpdateTime, college.getUpdateTime());
+        }
+        return chainWrapper;
     }
 }
