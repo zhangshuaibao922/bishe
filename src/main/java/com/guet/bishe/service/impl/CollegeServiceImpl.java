@@ -44,13 +44,13 @@ public class CollegeServiceImpl implements CollegeService {
         //1. 构建动态查询条件
         LambdaUpdateChainWrapper<College> queryWrapper = queryConditions(college);
         //2. 执行分页查询
-        Page<College> pagin = new Page<>(current , size , true);
-        IPage<College> selectResult = collegeMapper.selectByPage(pagin , queryWrapper);
-        pagin.setPages(selectResult.getPages());
-        pagin.setTotal(selectResult.getTotal());
-        pagin.setRecords(selectResult.getRecords());
+        Page<College> paging = new Page<>(current , size , true);
+        IPage<College> selectResult = collegeMapper.selectByPage(paging , queryWrapper);
+        paging.setPages(selectResult.getPages());
+        paging.setTotal(selectResult.getTotal());
+        paging.setRecords(selectResult.getRecords());
         //3. 返回结果
-        return pagin;
+        return paging;
     }
     
     /** 

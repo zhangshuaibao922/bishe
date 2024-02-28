@@ -6,27 +6,27 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-
+import java.util.Date;
 
  /**
- * 学院;
+ * 权限;
  * @author : cardo
- * @date : 2024-2-27
+ * @date : 2024-2-28
  */
-@ApiModel(value = "学院",description = "")
-@TableName("college")
+@ApiModel(value = "权限",description = "")
+@TableName("authority")
 @Data
-public class College implements Serializable{
-    /** 主键 */
-    @ApiModelProperty(name = "主键",notes = "")
+public class Authority implements Serializable{
+    /** 主键id */
+    @ApiModelProperty(name = "主键id",notes = "")
     @TableId(value = "id",type= IdType.AUTO)
     public Integer id ;
-    /** 学院ID */
-    @ApiModelProperty(name = "学院ID",notes = "")
-    public String collegeId ;
-    /** 学院名称 */
-    @ApiModelProperty(name = "学院名称",notes = "")
-    public String collegeName ;
+    /** 权限id */
+    @ApiModelProperty(name = "权限id",notes = "")
+    public String authorityId ;
+    /** 角色 */
+    @ApiModelProperty(name = "角色",notes = "")
+    public String authorityRole ;
     /** 创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "")
     @TableField(fill = FieldFill.INSERT)
@@ -35,4 +35,5 @@ public class College implements Serializable{
     @ApiModelProperty(name = "更新时间",notes = "")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
+
 }
