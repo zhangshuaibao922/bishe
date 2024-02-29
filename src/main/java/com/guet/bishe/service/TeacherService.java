@@ -23,12 +23,12 @@ public interface TeacherService extends IService<Teacher> {
     /**
      * 分页查询
      *
-     * @param teacher 筛选条件
+     * @param collegeId 筛选条件
      * @param current 当前页码
      * @param size  每页大小
      * @return
      */
-    Page<Teacher> paginQuery(Teacher teacher, long current, long size);
+    Page<Teacher> paginQuery(String collegeId, long current, long size);
     /**
      * 新增数据
      *

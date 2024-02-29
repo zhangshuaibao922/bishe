@@ -7,6 +7,7 @@ import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.service.TeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jnr.ffi.annotations.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -42,19 +43,21 @@ public class TeacherController{
     /**
      * 分页查询
      *
-     * @param teacher 筛选条件
-     * @param pageRequest 分页对象
+     * @param collegeId 筛选条件
+     * @param current 当前页码
+     * @param size  每页大小
      * @return 查询结果
      */
     @ApiOperation("分页查询")
     @GetMapping
-    public ResponseEntity<PageImpl<Teacher>> paginQuery(Teacher teacher, PageRequest pageRequest){
+    public ResponseEntity<PageImpl<Teacher>> paginQuery(@RequestParam(required = false) String collegeId,
+                                                                @RequestParam(required = false) Long current,
+                                                                @RequestParam(required = false) Long size){
         //1.分页参数
-        long current = pageRequest.getPageNumber();
-        long size = pageRequest.getPageSize();
+        PageRequest pageRequest = PageRequest.of(current.intValue(), size.intValue());
         //2.分页查询
         /*把Mybatis的分页对象做封装转换，MP的分页对象上有一些SQL敏感信息，还是通过spring的分页模型来封装数据吧*/
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<Teacher> pageResult = teacherService.paginQuery(teacher, current,size);
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<Teacher> pageResult = teacherService.paginQuery(collegeId, current,size);
         //3. 分页结果组装
         List<Teacher> dataList = pageResult.getRecords();
         long total = pageResult.getTotal();
@@ -70,7 +73,7 @@ public class TeacherController{
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<Teacher> add(Teacher teacher){
+    public ResponseEntity<Teacher> add(@RequestBody Teacher teacher){
         return ResponseEntity.ok(teacherService.insert(teacher));
     }
 
@@ -82,7 +85,7 @@ public class TeacherController{
      */
     @ApiOperation("更新数据")
     @PutMapping
-    public ResponseEntity<Boolean> edit(Teacher teacher){
+    public ResponseEntity<Boolean> edit(@RequestBody Teacher teacher){
         return ResponseEntity.ok(teacherService.update(teacher));
     }
 
@@ -93,8 +96,8 @@ public class TeacherController{
      * @return 是否成功
      */
     @ApiOperation("通过主键删除数据")
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(String teacherId){
+    @DeleteMapping("{teacherId}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable String teacherId){
         return ResponseEntity.ok(teacherService.deleteByTeacherId(teacherId));
     }
 }
