@@ -33,7 +33,7 @@ public class AuthorityController{
      */
     @ApiOperation("通过ID查询单条数据")
     @GetMapping("{authorityId}")
-    public ResponseEntity<Authority> queryById(String  authorityId){
+    public ResponseEntity<Authority> queryById(@PathVariable String  authorityId){
         return ResponseEntity.ok(authorityService.queryByAuthorityId(authorityId));
     }
     
