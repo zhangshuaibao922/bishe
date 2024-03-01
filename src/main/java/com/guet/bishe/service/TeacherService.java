@@ -35,7 +35,7 @@ public interface TeacherService extends IService<Teacher> {
      * @param teacher 实例对象
      * @return 实例对象
      */
-    Teacher insert(Teacher teacher);
+    boolean insert(Teacher teacher);
     /**
      * 更新数据
      *

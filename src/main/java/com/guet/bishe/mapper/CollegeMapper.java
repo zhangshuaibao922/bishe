@@ -15,12 +15,4 @@ import org.apache.ibatis.annotations.Param;
 */
 @Mapper
 public interface CollegeMapper extends BaseMapper<College>{
-   /**
-    * 分页查询指定行数据
-    *
-    * @param page 分页参数
-    * @param wrapper 动态查询条件
-    * @return 分页对象列表
-    */
-   IPage<College> selectByPage(IPage<College> page , @Param(Constants.WRAPPER) Wrapper<College> wrapper);
 }

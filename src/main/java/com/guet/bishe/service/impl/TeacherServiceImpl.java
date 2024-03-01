@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 
 /**
  * 教师;(teacher)表服务实现类
@@ -64,9 +63,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      * @param teacher 实例对象
      * @return 实例对象
      */
-    public Teacher insert(Teacher teacher) {
-        teacherMapper.insert(teacher);
-        return teacher;
+    public boolean insert(Teacher teacher) {
+        int insert = teacherMapper.insert(teacher);
+        return insert > 0;
     }
 
     /**

@@ -22,26 +22,26 @@ public interface CollegeService{
     /**
      * 分页查询
      *
-     * @param college 筛选条件
+     * @param collegeId 筛选条件
      * @param current 当前页码
      * @param size  每页大小
      * @return
      */
-    Page<College> paginQuery(College college, long current, long size);
+    Page<College> paginQuery(String collegeId, long current, long size);
     /** 
      * 新增数据
      *
      * @param college 实例对象
      * @return 实例对象
      */
-    College insert(College college);
+    boolean insert(College college);
     /** 
      * 更新数据
      *
      * @param college 实例对象
      * @return 实例对象
      */
-    College update(College college);
+    boolean update(College college);
     /**
      * 通过主键删除数据
      *

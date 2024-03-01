@@ -73,7 +73,7 @@ public class TeacherController{
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<Teacher> add(@RequestBody Teacher teacher){
+    public ResponseEntity<Boolean> add(@RequestBody Teacher teacher){
         return ResponseEntity.ok(teacherService.insert(teacher));
     }
 
