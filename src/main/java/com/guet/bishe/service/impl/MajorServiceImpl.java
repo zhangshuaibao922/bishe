@@ -1,6 +1,7 @@
 package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.guet.bishe.entity.Major;
 import com.guet.bishe.mapper.MajorMapper;
 import com.guet.bishe.service.MajorService;
@@ -21,27 +22,32 @@ public class MajorServiceImpl implements MajorService {
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param majorId 主键
      * @return 实例对象
      */
-    public Major queryById(Integer id){
-        return majorMapper.selectById(id);
+    public Major queryByMajorId(String majorId){
+        LambdaQueryWrapper<Major> majorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        majorLambdaQueryWrapper.eq(Major::getMajorId,majorId);
+        return majorMapper.selectOne(majorLambdaQueryWrapper);
     }
     
     /**
      * 分页查询
      *
-     * @param major 筛选条件
+     * @param majorName 筛选条件
      * @param current 当前页码
      * @param size  每页大小
      * @return
      */
-    public Page<Major> paginQuery(Major major, long current, long size){
+    public Page<Major> paginQuery(String majorName, long current, long size){
         //1. 构建动态查询条件
-
+        LambdaQueryWrapper<Major> majorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if(StrUtil.isNotBlank(majorName)){
+            majorLambdaQueryWrapper.eq(Major::getMajorName,majorName);
+        }
         //2. 执行分页查询
         Page<Major> pagin = new Page<>(current , size , true);
-        IPage<Major> selectResult = majorMapper.selectByPage(pagin , queryWrapper);
+        IPage<Major> selectResult = majorMapper.selectPage(pagin , majorLambdaQueryWrapper);
         pagin.setPages(selectResult.getPages());
         pagin.setTotal(selectResult.getTotal());
         pagin.setRecords(selectResult.getRecords());
@@ -55,9 +61,9 @@ public class MajorServiceImpl implements MajorService {
      * @param major 实例对象
      * @return 实例对象
      */
-    public Major insert(Major major){
-        majorMapper.insert(major);
-        return major;
+    public boolean insert(Major major){
+        int insert = majorMapper.insert(major);
+        return insert>0;
     }
     
     /** 
@@ -66,40 +72,25 @@ public class MajorServiceImpl implements MajorService {
      * @param major 实例对象
      * @return 实例对象
      */
-    public Major update(Major major){
+    public boolean update(Major major){
         //1. 根据条件动态更新
-        LambdaUpdateChainWrapper<Major> chainWrapper = new LambdaUpdateChainWrapper<Major>(majorMapper);
-        if(StrUtil.isNotBlank(major.getMajorId())){
-            chainWrapper.eq(Major::getMajorId, major.getMajorId());
-        }
-        if(StrUtil.isNotBlank(major.getMajorName())){
-            chainWrapper.eq(Major::getMajorName, major.getMajorName());
-        }
-        if(StrUtil.isNotBlank(major.getCreateTime())){
-            chainWrapper.eq(Major::getCreateTime, major.getCreateTime());
-        }
-        if(StrUtil.isNotBlank(major.getUpdateTime())){
-            chainWrapper.eq(Major::getUpdateTime, major.getUpdateTime());
-        }
+        LambdaQueryWrapper<Major> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Major::getMajorId,major.getMajorId());
         //2. 设置主键，并更新
-        chainWrapper.set(Major::getId, major.getId());
-        boolean ret = chainWrapper.update();
-        //3. 更新成功了，查询最最对象返回
-        if(ret){
-            return queryById(major.getId());
-        }else{
-            return major;
-        }
+        int update = majorMapper.update(major, wrapper);
+        return update>0;
     }
     
     /** 
      * 通过主键删除数据
      *
-     * @param id 主键
+     * @param majorId 主键
      * @return 是否成功
      */
-    public boolean deleteById(Integer id){
-        int total = majorMapper.deleteById(id);
+    public boolean deleteByMajorId(String majorId){
+        LambdaQueryWrapper<Major> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Major::getMajorId,majorId);
+        int total = majorMapper.delete(wrapper);
         return total > 0;
     }
 }

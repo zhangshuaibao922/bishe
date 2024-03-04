@@ -14,20 +14,20 @@ public interface MajorService{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param majorId 主键
      * @return 实例对象
      */
-    Major queryById(Integer id);
+    Major queryByMajorId(String majorId);
     
     /**
      * 分页查询
      *
-     * @param major 筛选条件
+     * @param majorName 筛选条件
      * @param current 当前页码
      * @param size  每页大小
      * @return
      */
-    Page<Major> paginQuery(Major major, long current, long size);
+    Page<Major> paginQuery(String majorName, long current, long size);
     /** 
      * 新增数据
      *
@@ -45,8 +45,8 @@ public interface MajorService{
     /** 
      * 通过主键删除数据
      *
-     * @param id 主键
+     * @param majorId 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer id);
+    boolean deleteByMajorId(String majorId);
 }
