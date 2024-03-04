@@ -2,6 +2,7 @@ package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.entity.Major;
 import com.guet.bishe.mapper.MajorMapper;
 import com.guet.bishe.service.MajorService;
@@ -15,7 +16,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
  * @date : 2024-3-1
  */
 @Service
-public class MajorServiceImpl implements MajorService {
+public class MajorServiceImpl extends ServiceImpl<MajorMapper, Major> implements MajorService {
     @Autowired
     private MajorMapper majorMapper;
     

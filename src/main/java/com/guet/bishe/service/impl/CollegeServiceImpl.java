@@ -1,9 +1,13 @@
 package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.entity.College;
+import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.mapper.CollegeMapper;
+import com.guet.bishe.mapper.TeacherMapper;
 import com.guet.bishe.service.CollegeService;
+import com.guet.bishe.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -17,7 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
  * @date : 2024-2-27
  */
 @Service
-public class CollegeServiceImpl implements CollegeService {
+public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> implements CollegeService {
     @Autowired
     private CollegeMapper collegeMapper;
 

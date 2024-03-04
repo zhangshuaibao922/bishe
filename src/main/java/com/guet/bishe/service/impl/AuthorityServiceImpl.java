@@ -1,10 +1,14 @@
 package com.guet.bishe.service.impl;
 
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.entity.Authority;
 
+import com.guet.bishe.entity.College;
 import com.guet.bishe.mapper.AuthorityMapper;
+import com.guet.bishe.mapper.CollegeMapper;
 import com.guet.bishe.service.AuthorityService;
+import com.guet.bishe.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,7 @@ import java.util.List;
  * @date : 2024-2-28
  */
 @Service
-public class AuthorityServiceImpl implements AuthorityService {
+public class AuthorityServiceImpl extends ServiceImpl<AuthorityMapper, Authority> implements AuthorityService {
     @Autowired
     private AuthorityMapper authorityMapper;
 

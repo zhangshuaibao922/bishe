@@ -1,6 +1,7 @@
 package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.Authority;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * @author : cardo
  * @date : 2024-2-28
  */
-public interface AuthorityService {
+public interface AuthorityService extends IService<Authority> {
     /**
      *
      * @return 权限列表

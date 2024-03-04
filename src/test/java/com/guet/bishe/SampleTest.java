@@ -40,8 +40,8 @@ public class SampleTest {
         teacher.setMobilePhone("16696838939");
         teacher.setAuthorityId("3");
         teacher.setStatus("1");
-        Teacher insert = teacherService.insert(teacher);
-        System.out.println(insert);
+//        Teacher insert = teacherService.insert(teacher);
+//        System.out.println(insert);
 
 //        College college = new College();
 //        college.collegeId=UUID.randomUUID().toString();

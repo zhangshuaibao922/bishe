@@ -1,6 +1,7 @@
 package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.College;
 
 
@@ -9,7 +10,7 @@ import com.guet.bishe.entity.College;
  * @author : cardo
  * @date : 2024-2-27
  */
-public interface CollegeService{
+public interface CollegeService extends IService<College> {
     
     /** 
      * 通过ID查询单条数据 

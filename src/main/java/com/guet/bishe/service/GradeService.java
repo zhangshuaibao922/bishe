@@ -1,54 +1,52 @@
 package com.guet.bishe.service;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.guet.bishe.entity.Major;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.Grade;
 
 
 /**
- * 专业;(major)表服务接口
+ * 年级;(grade)表服务接口
  * @author : cardo
- * @date : 2024-3-1
+ * @date : 2024-3-4
  */
-public interface MajorService extends IService<Major> {
+public interface GradeService extends IService<Grade> {
     
     /** 
      * 通过ID查询单条数据 
      *
-     * @param majorId 主键
+     * @param gradeId 主键
      * @return 实例对象
      */
-    Major queryByMajorId(String majorId);
+    Grade queryByGradeId(String gradeId);
     
     /**
      * 分页查询
      *
-     * @param majorName 筛选条件
+     * @param gradeYear 筛选条件
      * @param current 当前页码
      * @param size  每页大小
      * @return
      */
-    Page<Major> paginQuery(String majorName, long current, long size);
+    Page<Grade> paginQuery(String gradeYear, long current, long size);
     /** 
      * 新增数据
      *
-     * @param major 实例对象
+     * @param grade 实例对象
      * @return 实例对象
      */
-    boolean insert(Major major);
+    boolean insert(Grade grade);
     /** 
      * 更新数据
      *
-     * @param major 实例对象
+     * @param grade 实例对象
      * @return 实例对象
      */
-    boolean update(Major major);
+    boolean update(Grade grade);
     /** 
      * 通过主键删除数据
      *
-     * @param majorId 主键
+     * @param gradeId 主键
      * @return 是否成功
      */
-    boolean deleteByMajorId(String majorId);
+    boolean deleteByGradeId(String gradeId);
 }
