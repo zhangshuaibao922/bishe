@@ -44,7 +44,7 @@ public class StudentController{
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<Boolean> add(Student student){
+    public ResponseEntity<Boolean> add(@RequestBody Student student){
         return ResponseEntity.ok(studentService.insert(student));
     }
     
@@ -56,7 +56,7 @@ public class StudentController{
      */
     @ApiOperation("更新数据")
     @PutMapping
-    public ResponseEntity<Boolean> edit(Student student){
+    public ResponseEntity<Boolean> edit(@RequestBody Student student){
         return ResponseEntity.ok(studentService.update(student));
     }
     
