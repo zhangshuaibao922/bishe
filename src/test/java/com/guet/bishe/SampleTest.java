@@ -5,10 +5,12 @@ import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.guet.bishe.entity.Authority;
 import com.guet.bishe.entity.College;
+import com.guet.bishe.entity.LoginDto;
 import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.mapper.AuthorityMapper;
 import com.guet.bishe.mapper.CollegeMapper;
 import com.guet.bishe.mapper.TeacherMapper;
+import com.guet.bishe.service.LoginService;
 import com.guet.bishe.service.TeacherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +62,15 @@ public class SampleTest {
 //        int insert = authorityMapper.insert(authority);
 //        System.out.println(insert);
     }
+    @Autowired
+    LoginService loginService;
     @Test
     public void test(){
-        LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, "20030001"));
-
-        System.out.println(teacher);
+        LoginDto loginDto = new LoginDto();
+        loginDto.setIdentity("student");
+        loginDto.setUsername("student");
+        loginDto.setPassword("student");
+        String login = loginService.login(loginDto);
     }
 
 }
