@@ -2,6 +2,7 @@ package com.guet.bishe.controller;
 
 import com.guet.bishe.entity.Authority;
 import com.guet.bishe.entity.LoginDto;
+import com.guet.bishe.entity.User;
 import com.guet.bishe.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,19 @@ public class LoginController {
      */
     @ApiOperation("登录")
     @PostMapping("/login")
-    public ResponseEntity<String> add(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<User> add(@RequestBody LoginDto loginDto) {
         return ResponseEntity.ok(loginService.login(loginDto));
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param user 实例对象
+     * @return 实例对象
+     */
+    @ApiOperation("修改密码")
+    @PostMapping("/updatepassword")
+    public ResponseEntity<String> add(@RequestBody User user) {
+        return ResponseEntity.ok(loginService.updateByUser(user));
     }
 }

@@ -3,10 +3,7 @@ package com.guet.bishe;
 
 import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.guet.bishe.entity.Authority;
-import com.guet.bishe.entity.College;
-import com.guet.bishe.entity.LoginDto;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.AuthorityMapper;
 import com.guet.bishe.mapper.CollegeMapper;
 import com.guet.bishe.mapper.TeacherMapper;
@@ -67,10 +64,11 @@ public class SampleTest {
     @Test
     public void test(){
         LoginDto loginDto = new LoginDto();
-        loginDto.setIdentity("student");
-        loginDto.setUsername("student");
-        loginDto.setPassword("student");
-        String login = loginService.login(loginDto);
+        loginDto.setIdentity("teacher");
+        loginDto.setUsername("20030100001");
+        loginDto.setPassword("root");
+        User login = loginService.login(loginDto);
+        System.out.println(login);
     }
 
 }

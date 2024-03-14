@@ -58,6 +58,7 @@ public class Teacher implements Serializable{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
-
-
+     /** 个人简介 */
+     @ApiModelProperty(name = "个人简介",notes = "")
+     public String description ;
 }
