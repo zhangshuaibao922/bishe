@@ -2,6 +2,7 @@ package com.guet.bishe.controller;
 
 import com.guet.bishe.entity.Authority;
 import com.guet.bishe.entity.LoginDto;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.User;
 import com.guet.bishe.service.LoginService;
 import io.swagger.annotations.Api;
@@ -34,8 +35,8 @@ public class LoginController {
      */
     @ApiOperation("登录")
     @PostMapping("/login")
-    public ResponseEntity<User> add(@RequestBody LoginDto loginDto) {
-        return ResponseEntity.ok(loginService.login(loginDto));
+    public Response<User> add(@RequestBody LoginDto loginDto) {
+        return loginService.login(loginDto);
     }
 
     /**

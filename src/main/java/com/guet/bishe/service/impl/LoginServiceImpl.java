@@ -30,9 +30,12 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
      * @param loginDto
      * @return
      */
-    public User login(LoginDto loginDto) {
+    public Response<User> login(LoginDto loginDto) {
+        Response<User> userResponse = new Response<>();
         if(StrUtil.isBlank(loginDto.identity)||StrUtil.isBlank(loginDto.username)||StrUtil.isBlank(loginDto.password)){
-            return null;
+            userResponse.setMessage("身份/账号/密码为空");
+            userResponse.setData(null);
+            return userResponse;
         }
         if("student".equals(loginDto.identity)){
             LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -45,9 +48,13 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
                 user.setAuthorityRole(getAuth(student.getAuthorityId()));
                 user.setDescription(student.getDescription());
                 user.setIdentity(loginDto.identity);
-                return user;
+                userResponse.setMessage("学生登录成功");
+                userResponse.setData(user);
+                return userResponse;
             }else {
-                return null;
+                userResponse.setMessage("用户不存在");
+                userResponse.setData(null);
+                return userResponse;
             }
 
         } else if ("teacher".equals(loginDto.identity)) {
@@ -61,12 +68,18 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
                 user.setAuthorityRole(getAuth(teacher.getAuthorityId()));
                 user.setDescription(teacher.getDescription());
                 user.setIdentity(loginDto.identity);
-                return user;
+                userResponse.setMessage("教师登录成功");
+                userResponse.setData(user);
+                return userResponse;
             }else {
-                return null;
+                userResponse.setMessage("用户不存在");
+                userResponse.setData(null);
+                return userResponse;
             }
         }
-        return null;
+        userResponse.setMessage("身份不存在");
+        userResponse.setData(null);
+        return userResponse;
     }
 
     /**
