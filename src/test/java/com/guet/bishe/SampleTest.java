@@ -72,13 +72,9 @@ public class SampleTest {
     private LessonServiceImpl lessonService;
     @Test
     public void test(){
-        Lesson lesson = new Lesson();
-        lesson.setLessonId("2222225");
-        lesson.setLessonName("编译原理");
-        lesson.setScore("3.00");
-        lesson.setHours("72");
-        boolean insert = lessonService.insert(lesson);
+        Lesson lesson = lessonService.queryById("123");
         System.out.println();
+
     }
 
 }

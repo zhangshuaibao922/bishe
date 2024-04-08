@@ -18,10 +18,10 @@ public interface LessonService extends IService<Lesson> {
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param LessonId 主键
      * @return 实例对象
      */
-    Lesson queryById(Integer id);
+    Lesson queryById(String LessonId);
 
     /** 
      * 新增数据

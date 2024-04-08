@@ -28,13 +28,13 @@ public class LessonController{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param LessonId 主键
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<Lesson> queryById(@PathVariable Integer id){
-        return ResponseEntity.ok(lessonsService.queryById(id));
+    @GetMapping("{LessonId}")
+    public ResponseEntity<Lesson> queryById(@PathVariable String LessonId){
+        return ResponseEntity.ok(lessonsService.queryById(LessonId));
     }
 
      /**

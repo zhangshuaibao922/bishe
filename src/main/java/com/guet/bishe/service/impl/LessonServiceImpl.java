@@ -27,11 +27,20 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param LessonId 主键
      * @return 实例对象
      */
-    public Lesson queryById(Integer id){
-        return lessonMapper.selectById(id);
+    public Lesson queryById(String LessonId){
+        LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lessonLambdaQueryWrapper.eq(Lesson::getLessonId,LessonId);
+        Lesson lesson = lessonMapper.selectOne(lessonLambdaQueryWrapper);
+        if(lesson==null) {
+            Lesson lesson1 = new Lesson();
+            lesson1.setId(-1);
+            return lesson1;
+        }else{
+            return lesson;
+        }
     }
 
     
@@ -53,10 +62,9 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
      */
     public boolean update(Lesson lesson){
         //1. 根据条件动态更新
-        LambdaQueryWrapper<Lesson> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Lesson::getId,lesson.getId());
+
         //2. 设置主键，并更新
-        return lessonMapper.update(lesson, lambdaQueryWrapper)>0;
+        return lessonMapper.updateById(lesson)>0;
     }
     
     /** 
@@ -66,9 +74,7 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
      * @return 是否成功
      */
     public boolean deleteById(Integer id){
-        LambdaQueryWrapper<Lesson> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Lesson::getId,id);
-        return lessonMapper.delete(lambdaQueryWrapper)> 0;
+        return lessonMapper.deleteById(id)> 0;
     }
 
     @Override
