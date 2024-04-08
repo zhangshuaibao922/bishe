@@ -3,6 +3,9 @@ package com.guet.bishe.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.College;
+import com.guet.bishe.entity.Response;
+
+import java.util.List;
 
 
 /**
@@ -46,8 +49,10 @@ public interface CollegeService extends IService<College> {
     /**
      * 通过主键删除数据
      *
-     * @param collegeId 主键
+     * @param id 主键
      * @return 是否成功
      */
-    boolean deleteByCollegeId(String collegeId);
+    boolean deleteByCollegeId(Integer id);
+
+    Response<List<College>> queryAll();
 }

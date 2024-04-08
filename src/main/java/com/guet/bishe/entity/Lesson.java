@@ -7,27 +7,33 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-
+import java.util.Date;
 
  /**
- * 学院;
+ * 课程;
  * @author : cardo
- * @date : 2024-2-27
+ * @date : 2024-4-8
  */
-@ApiModel(value = "学院",description = "")
-@TableName("college")
+@ApiModel(value = "课程",description = "")
+@TableName("lesson")
 @Data
-public class College implements Serializable{
+public class Lesson implements Serializable{
     /** 主键 */
     @ApiModelProperty(name = "主键",notes = "")
     @TableId(value = "id",type= IdType.AUTO)
     public Integer id ;
-    /** 学院ID */
-    @ApiModelProperty(name = "学院ID",notes = "")
-    public String collegeId ;
-    /** 学院名称 */
-    @ApiModelProperty(name = "学院名称",notes = "")
-    public String collegeName ;
+    /** 课程ID */
+    @ApiModelProperty(name = "课程ID",notes = "")
+    public String lessonId ;
+    /** 课程名 */
+    @ApiModelProperty(name = "课程名",notes = "")
+    public String lessonName ;
+    /** 学时 */
+    @ApiModelProperty(name = "学时",notes = "")
+    public String hours ;
+    /** 学分 */
+    @ApiModelProperty(name = "学分",notes = "")
+    public String score ;
     /** 创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -38,4 +44,5 @@ public class College implements Serializable{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
+
 }

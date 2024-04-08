@@ -2,6 +2,7 @@ package com.guet.bishe.controller;
 
 
 
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.service.StudentService;
 import io.swagger.annotations.Api;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
- /**
+
+/**
  * 学生;(student)表控制层
  * @author : cardo
  * @date : 2024-3-5
@@ -47,7 +50,6 @@ public class StudentController{
     public ResponseEntity<Boolean> add(@RequestBody Student student){
         return ResponseEntity.ok(studentService.insert(student));
     }
-    
     /** 
      * 更新数据
      *

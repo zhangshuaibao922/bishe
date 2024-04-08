@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.AuthorityMapper;
 import com.guet.bishe.mapper.CollegeMapper;
+import com.guet.bishe.mapper.LessonMapper;
 import com.guet.bishe.mapper.TeacherMapper;
+import com.guet.bishe.service.CollegeService;
 import com.guet.bishe.service.LoginService;
 import com.guet.bishe.service.TeacherService;
+import com.guet.bishe.service.impl.LessonServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,14 +64,21 @@ public class SampleTest {
     }
     @Autowired
     LoginService loginService;
+    @Autowired
+    CollegeService collegeService;
+    @Autowired
+    private LessonMapper lessonMapper;
+    @Autowired
+    private LessonServiceImpl lessonService;
     @Test
     public void test(){
-        LoginDto loginDto = new LoginDto();
-        loginDto.setIdentity("teacher");
-        loginDto.setUsername("20030100001");
-        loginDto.setPassword("root");
-        User login = loginService.login(loginDto);
-        System.out.println(login);
+        Lesson lesson = new Lesson();
+        lesson.setLessonId("2222225");
+        lesson.setLessonName("编译原理");
+        lesson.setScore("3.00");
+        lesson.setHours("72");
+        boolean insert = lessonService.insert(lesson);
+        System.out.println();
     }
 
 }

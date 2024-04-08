@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.guet.bishe.entity.College;
+import com.guet.bishe.entity.Response;
+import com.guet.bishe.entity.User;
 import com.guet.bishe.service.CollegeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +39,17 @@ public class CollegeController{
     public ResponseEntity<College> queryById(@PathVariable String collegeId){
         return ResponseEntity.ok(collegeService.queryByCollegeId(collegeId));
     }
+
+     /**
+      * 查询全部数据
+      *
+      * @return 实例对象
+      */
+     @ApiOperation("通过ID查询单条数据")
+     @GetMapping("/all")
+     public Response<List<College>> queryAll(){
+         return collegeService.queryAll();
+     }
     
     /** 
      * 分页查询
@@ -90,12 +103,12 @@ public class CollegeController{
     /** 
      * 通过主键删除数据
      *
-     * @param collegeId 主键
+     * @param id 主键
      * @return 是否成功
      */
     @ApiOperation("通过主键删除数据")
-    @DeleteMapping("{collegeId}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable String collegeId){
-        return ResponseEntity.ok(collegeService.deleteByCollegeId(collegeId));
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable Integer id){
+        return ResponseEntity.ok(collegeService.deleteByCollegeId(id));
     }
 }
