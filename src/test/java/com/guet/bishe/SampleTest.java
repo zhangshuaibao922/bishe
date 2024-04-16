@@ -72,8 +72,8 @@ public class SampleTest {
     private LessonServiceImpl lessonService;
     @Test
     public void test(){
-        Lesson lesson = lessonService.queryById("123");
-        System.out.println();
+//        Lesson lesson = lessonService.queryById("123");
+//        System.out.println();
 
     }
 

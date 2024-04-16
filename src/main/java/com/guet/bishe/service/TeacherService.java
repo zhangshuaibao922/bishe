@@ -2,7 +2,10 @@ package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Teacher;
+
+import java.util.List;
 
 
 /**
@@ -50,4 +53,6 @@ public interface TeacherService extends IService<Teacher> {
      * @return 是否成功
      */
     boolean deleteByTeacherId(String teacherId);
+
+    Response<List<Teacher>> queryAll();
 }

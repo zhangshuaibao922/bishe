@@ -27,20 +27,13 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
     /** 
      * 通过ID查询单条数据 
      *
-     * @param LessonId 主键
+     * @param LessonName 主键
      * @return 实例对象
      */
-    public Lesson queryById(String LessonId){
+    public List<Lesson> queryById(String LessonName){
         LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lessonLambdaQueryWrapper.eq(Lesson::getLessonId,LessonId);
-        Lesson lesson = lessonMapper.selectOne(lessonLambdaQueryWrapper);
-        if(lesson==null) {
-            Lesson lesson1 = new Lesson();
-            lesson1.setId(-1);
-            return lesson1;
-        }else{
-            return lesson;
-        }
+        lessonLambdaQueryWrapper.like(Lesson::getLessonName,LessonName);
+        return lessonMapper.selectList(lessonLambdaQueryWrapper);
     }
 
     

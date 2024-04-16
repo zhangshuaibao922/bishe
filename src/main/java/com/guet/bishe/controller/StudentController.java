@@ -1,14 +1,12 @@
 package com.guet.bishe.controller;
 
 
-
-import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
+import com.guet.bishe.entity.StudentInfo;
 import com.guet.bishe.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +28,13 @@ public class StudentController{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param studentId 主键
+     * @param studentInfo 主键
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{studentId}")
-    public ResponseEntity<Student> queryById(@PathVariable  String studentId){
-        return ResponseEntity.ok(studentService.queryByStudentId(studentId));
+    @PutMapping("/select")
+    public ResponseEntity<List<Student>> queryById(@RequestBody StudentInfo studentInfo){
+        return ResponseEntity.ok(studentService.queryByStudentId(studentInfo));
     }
 
     /** 

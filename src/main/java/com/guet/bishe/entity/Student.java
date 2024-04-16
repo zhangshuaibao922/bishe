@@ -20,7 +20,6 @@ import java.util.Date;
 public class Student implements Serializable{
     /** 主键 */
     @ApiModelProperty(name = "主键",notes = "")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableId(value = "id",type= IdType.AUTO)
     public Integer id ;
     /** 所在班级ID */

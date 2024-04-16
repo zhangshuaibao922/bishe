@@ -3,6 +3,7 @@ package com.guet.bishe.controller;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.service.TeacherService;
 import io.swagger.annotations.Api;
@@ -39,6 +40,15 @@ public class TeacherController{
         return ResponseEntity.ok(teacherService.queryByTeacherId(teacherId));
     }
 
+     /**
+      * 查询全部课程
+      */
+     @ApiOperation("返回教师列表")
+     @GetMapping("/all")
+     public Response<List<Teacher>> queryAll()
+     {
+         return teacherService.queryAll();
+     }
     
     /**
      * 分页查询

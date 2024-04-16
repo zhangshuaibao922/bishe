@@ -2,6 +2,7 @@ package com.guet.bishe.service;
 
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
+import com.guet.bishe.entity.StudentInfo;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ public interface StudentService{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param studentId 主键
+     * @param studentInfo 主键
      * @return 实例对象
      */
-    Student queryByStudentId(String studentId);
+    List<Student> queryByStudentId(StudentInfo studentInfo);
 
     /** 
      * 新增数据

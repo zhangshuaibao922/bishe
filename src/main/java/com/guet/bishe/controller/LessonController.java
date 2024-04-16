@@ -7,8 +7,6 @@ import com.guet.bishe.service.LessonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +26,13 @@ public class LessonController{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param LessonId 主键
+     * @param LessonName 主键
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{LessonId}")
-    public ResponseEntity<Lesson> queryById(@PathVariable String LessonId){
-        return ResponseEntity.ok(lessonsService.queryById(LessonId));
+    @GetMapping("{LessonName}")
+    public ResponseEntity<List<Lesson>> queryById(@PathVariable String LessonName){
+        return ResponseEntity.ok(lessonsService.queryById(LessonName));
     }
 
      /**
