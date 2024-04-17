@@ -32,9 +32,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      * @param teacherId 主键
      * @return 实例对象
      */
-    public Teacher queryByTeacherId(String teacherId) {
+    public List<Teacher> queryByTeacherId(String teacherId) {
         LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        return teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, teacherId));
+        return teacherMapper.selectList(teacherLambdaQueryWrapper.like(Teacher::getTeacherId, teacherId));
     }
 
     /**

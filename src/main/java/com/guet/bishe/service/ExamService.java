@@ -1,39 +1,37 @@
 package com.guet.bishe.service;
-
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.guet.bishe.entity.Instruct;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.Exam;
 
 
-/**
- * 授课;(instruct)表服务接口
+ /**
+ * 考试;(exam)表服务接口
  * @author : cardo
- * @date : 2024-4-16
+ * @date : 2024-4-17
  */
-public interface InstructService extends IService<Instruct> {
+public interface ExamService extends IService<Exam> {
     
     /** 
      * 通过ID查询单条数据 
      *
-     * @param lessonId 主键
+     * @param id 主键
      * @return 实例对象
      */
-    Teacher queryById(String lessonId);
-
-    /** 
+    Exam queryById(Integer id);
+    /**
      * 新增数据
      *
-     * @param instruct 实例对象
+     * @param exam 实例对象
      * @return 实例对象
      */
-    boolean insert(Instruct instruct);
+    boolean insert(Exam exam);
     /** 
      * 更新数据
      *
-     * @param instruct 实例对象
+     * @param exam 实例对象
      * @return 实例对象
      */
-    boolean update(Instruct instruct);
+    boolean update(Exam exam);
     /** 
      * 通过主键删除数据
      *

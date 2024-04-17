@@ -21,7 +21,7 @@ public interface TeacherService extends IService<Teacher> {
      * @param teacherId 主键
      * @return 实例对象
      */
-    Teacher queryByTeacherId(String teacherId);
+    List<Teacher> queryByTeacherId(String teacherId);
 
     /**
      * 分页查询

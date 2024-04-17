@@ -3,6 +3,7 @@ package com.guet.bishe.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.Lesson;
+import com.guet.bishe.entity.LessonDto;
 import com.guet.bishe.entity.Response;
 
 import java.util.List;
@@ -45,5 +46,7 @@ public interface LessonService extends IService<Lesson> {
      */
     boolean deleteById(Integer id);
 
-    Response<List<Lesson>> queryAll();
- }
+    Response<List<LessonDto>> queryAll();
+
+    Response<List<LessonDto>> queryAllByTeacherId(String teacherId);
+}

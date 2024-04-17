@@ -2,7 +2,9 @@ package com.guet.bishe.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.entity.Instruct;
+import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.mapper.InstructMapper;
+import com.guet.bishe.mapper.TeacherMapper;
 import com.guet.bishe.service.InstructService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +21,26 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 public class InstructServiceImpl extends ServiceImpl<InstructMapper, Instruct> implements InstructService {
     @Autowired
     private InstructMapper instructMapper;
+    @Autowired
+    private TeacherMapper teacherMapper;
     
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param lessonId 主键
      * @return 实例对象
      */
-    public Instruct queryById(Integer id){
+    public Teacher queryById(String lessonId){
         LambdaQueryWrapper<Instruct> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Instruct::getId,id);
-        return instructMapper.selectOne(lambdaQueryWrapper);
+        lambdaQueryWrapper.eq(Instruct::getLessonId,lessonId);
+        Instruct instruct = instructMapper.selectOne(lambdaQueryWrapper);
+        if(instruct==null){
+            return null;
+        }else {
+            LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            teacherLambdaQueryWrapper.eq(Teacher::getTeacherId,instruct.getTeacherId());
+            return teacherMapper.selectOne(teacherLambdaQueryWrapper);
+        }
     }
 
     

@@ -2,6 +2,7 @@ package com.guet.bishe.controller;
 import java.util.List;
 
 import com.guet.bishe.entity.Lesson;
+import com.guet.bishe.entity.LessonDto;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.service.LessonService;
 import io.swagger.annotations.Api;
@@ -40,10 +41,17 @@ public class LessonController{
       */
      @ApiOperation("返回课程列表")
      @GetMapping("/all")
-     public Response<List<Lesson>> queryAll() {
+     public Response<List<LessonDto>> queryAll() {
          return lessonsService.queryAll();
      }
-    
+
+     @ApiOperation("返回课程列表")
+     @GetMapping("/all/{teacherId}")
+     public Response<List<LessonDto>> queryAllByTeacherId(@PathVariable String teacherId) {
+         return lessonsService.queryAllByTeacherId(teacherId);
+     }
+
+
     /** 
      * 新增数据
      *

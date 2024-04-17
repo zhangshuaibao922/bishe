@@ -36,7 +36,7 @@ public class TeacherController{
      */
     @ApiOperation("通过ID查询单条数据")
     @GetMapping("{teacherId}")
-    public ResponseEntity<Teacher> queryById(@PathVariable String teacherId){
+    public ResponseEntity<List<Teacher>> queryById(@PathVariable String teacherId){
         return ResponseEntity.ok(teacherService.queryByTeacherId(teacherId));
     }
 
