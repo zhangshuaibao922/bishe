@@ -9,8 +9,14 @@ spring:
     url: jdbc:mysql://119.23.60.131:3306/bishe?characterEncoding=utf-8
     username: root
     password: zsb411025
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

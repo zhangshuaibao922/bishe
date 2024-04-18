@@ -1,19 +1,20 @@
 package com.guet.bishe.service;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.guet.bishe.entity.Exam;
-import com.guet.bishe.entity.ExamDto;
+import com.guet.bishe.entity.Model;
 import com.guet.bishe.entity.Response;
+import com.guet.bishe.entity.TestModelDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-
 /**
- * 考试;(exam)表服务接口
+ * 模版;(model)表服务接口
  * @author : cardo
- * @date : 2024-4-17
+ * @date : 2024-4-18
  */
-public interface ExamService extends IService<Exam> {
+public interface ModelService extends IService<Model> {
     
     /** 
      * 通过ID查询单条数据 
@@ -21,21 +22,22 @@ public interface ExamService extends IService<Exam> {
      * @param id 主键
      * @return 实例对象
      */
-    Exam queryById(Integer id);
-    /**
+    Model queryById(Integer id);
+
+    /** 
      * 新增数据
      *
-     * @param exam 实例对象
+     * @param model 实例对象
      * @return 实例对象
      */
-    boolean insert(Exam exam);
+    boolean insert(Model model);
     /** 
      * 更新数据
      *
-     * @param exam 实例对象
+     * @param model 实例对象
      * @return 实例对象
      */
-    boolean update(Exam exam);
+    boolean update(Model model);
     /** 
      * 通过主键删除数据
      *
@@ -44,7 +46,7 @@ public interface ExamService extends IService<Exam> {
      */
     boolean deleteById(Integer id);
 
-     Response<List<ExamDto>> queryByExamClass(String examClass);
+    Response<List<Model>> queryAllById(String id);
 
-    Response<List<Exam>> queryByExamName(String examName);
+    Response<Boolean> insertTestModelDto(TestModelDto testModelDto);
 }

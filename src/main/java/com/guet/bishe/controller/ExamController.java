@@ -2,6 +2,8 @@ package com.guet.bishe.controller;
 
 
 import com.guet.bishe.entity.Exam;
+import com.guet.bishe.entity.ExamDto;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.service.ExamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
- /**
+import java.util.List;
+
+/**
  * 考试;(exam)表控制层
  * @author : cardo
  * @date : 2024-4-17
@@ -24,15 +28,27 @@ public class ExamController{
     /** 
      * 通过ID查询单条数据 
      *
-     * @param id 主键
+     * @param examName 主键
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<Exam> queryById(@PathVariable Integer id){
-        return ResponseEntity.ok(examService.queryById(id));
+    @GetMapping("{examName}")
+    public Response<List<Exam>> queryByExamName(@PathVariable String examName){
+        return examService.queryByExamName(examName);
     }
-    
+
+     /**
+      * 通过ID查询单条数据
+      *
+      * @param examClass 主键
+      * @return 实例对象
+      */
+     @ApiOperation("通过ID查询单条数据")
+     @GetMapping("/all/{examClass}")
+     public Response<List<ExamDto>> queryByExamClass(@PathVariable String examClass){
+         return examService.queryByExamClass(examClass);
+     }
+
     /** 
      * 新增数据
      *

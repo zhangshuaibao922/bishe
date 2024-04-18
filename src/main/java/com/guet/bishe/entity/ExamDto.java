@@ -15,14 +15,12 @@ import java.io.Serializable;
  * @date : 2024-4-17
  */
 @ApiModel(value = "考试", description = "")
-@TableName("exam")
 @Data
-public class Exam implements Serializable {
+public class ExamDto implements Serializable {
     /**
      * 主键
      */
     @ApiModelProperty(name = "主键", notes = "")
-    @TableId(value = "id", type = IdType.AUTO)
     public Integer id;
     /**
      * 考试ID
@@ -54,7 +52,11 @@ public class Exam implements Serializable {
      */
     @ApiModelProperty(name = "答题卡模版id", notes = "")
     public String paperClassId;
-
+    /**
+     * 答题卡模版id
+     */
+    @ApiModelProperty(name = "答题卡模版", notes = "")
+    public String ModelName;
 
     /**
      * 考试日期
@@ -66,14 +68,12 @@ public class Exam implements Serializable {
      */
     @ApiModelProperty(name = "创建时间", notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @TableField(fill = FieldFill.INSERT)
     public String createTime;
     /**
      * 更新时间
      */
     @ApiModelProperty(name = "更新时间", notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime;
 
 }
