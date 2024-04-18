@@ -1,8 +1,8 @@
 package com.guet.bishe.service.impl;
-import cn.hutool.core.util.StrUtil;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.entity.Choose;
-import com.guet.bishe.entity.Lesson;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.mapper.ChooseMapper;
@@ -10,14 +10,9 @@ import com.guet.bishe.mapper.StudentMapper;
 import com.guet.bishe.service.ChooseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * 选课;(choose)表服务实现类

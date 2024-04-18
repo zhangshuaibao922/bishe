@@ -1,6 +1,5 @@
 package com.guet.bishe.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.Score;
 
