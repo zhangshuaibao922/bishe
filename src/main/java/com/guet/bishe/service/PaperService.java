@@ -45,7 +45,7 @@ public interface PaperService extends IService<Paper>{
      */
     boolean deleteById(Integer id);
 
-    void insertByExamId(String examId, String objectName);
+    void insertByExamId(String lessonId,String examId, String objectName);
 
     Response<List<StudentDto>> queryByIdExam(String lessonId, String examId);
 }

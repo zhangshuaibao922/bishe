@@ -80,7 +80,7 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
     }
 
     @Override
-    public void insertByExamId(String examId, String objectName) {
+    public void insertByExamId(String lessonId,String examId, String objectName) {
         Paper paper = new Paper();
         paper.setExamId(examId);
         String[] split = objectName.split("/");
@@ -94,10 +94,22 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
         paper.setCut("0");
         Paper paper1 = paperMapper.selectOne(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId).eq(Paper::getStudentId, paper.getStudentId()));
         if(paper1==null){
-            paperMapper.insert(paper);
+            LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            chooseLambdaQueryWrapper.eq(Choose::getLessonId,lessonId);
+            List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
+            List<String> list = chooses.stream().map(Choose::getStudentId).toList();
+            if(list.contains(paper.getStudentId())){
+                paperMapper.insert(paper);
+            }
         }else {
-            paper.setId(paper1.getId());
-            paperMapper.updateById(paper);
+            LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            chooseLambdaQueryWrapper.eq(Choose::getLessonId,lessonId);
+            List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
+            List<String> list = chooses.stream().map(Choose::getStudentId).toList();
+            if(list.contains(paper.getStudentId())){
+                paper.setId(paper1.getId());
+                paperMapper.updateById(paper);
+            }
         }
 
     }
@@ -108,28 +120,39 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
         chooseLambdaQueryWrapper.eq(Choose::getLessonId, lessonId);
         List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
         List<String> studenIds = chooses.stream().map(choose -> choose.studentId).toList();
-        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        studentLambdaQueryWrapper.in(Student::getStudentId, studenIds);
-        List<Student> studentList = studentMapper.selectList(studentLambdaQueryWrapper);
-        ArrayList<StudentDto> studentDtos = new ArrayList<>();
         Response<List<StudentDto>> listResponse = new Response<>();
-        for (Student data : studentList) {
-            StudentDto studentDto = new StudentDto();
-            studentDto.setStudentId(data.getStudentId());
-            studentDto.setStudentName(data.getStudentName());
-            LambdaQueryWrapper<Paper> paperLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            paperLambdaQueryWrapper.eq(Paper::getStudentId, data.getStudentId());
-            paperLambdaQueryWrapper.eq(Paper::getExamId, examId);
-            Paper paper = paperMapper.selectOne(paperLambdaQueryWrapper);
-            if(paper==null){
-                studentDto.setPaperUrl("");
-                listResponse.setMessage("部分未上传");
+        ArrayList<StudentDto> studentDtos = new ArrayList<>();
+        if(studenIds.size()<=0){
+            listResponse.setMessage("没有学生选择该课程");
+            listResponse.setData(null);
+        }else {
+            LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            studentLambdaQueryWrapper.in(Student::getStudentId, studenIds);
+            List<Student> studentList = studentMapper.selectList(studentLambdaQueryWrapper);
+            if (studentList.size()<=0){
+                listResponse.setMessage("没有学生选择该课程");
+                listResponse.setData(null);
             }else {
-                studentDto.setPaperUrl(paper.getPaperUrl());
+                for (Student data : studentList) {
+                    StudentDto studentDto = new StudentDto();
+                    studentDto.setStudentId(data.getStudentId());
+                    studentDto.setStudentName(data.getStudentName());
+                    LambdaQueryWrapper<Paper> paperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                    paperLambdaQueryWrapper.eq(Paper::getStudentId, data.getStudentId());
+                    paperLambdaQueryWrapper.eq(Paper::getExamId, examId);
+                    Paper paper = paperMapper.selectOne(paperLambdaQueryWrapper);
+                    if(paper==null){
+                        studentDto.setPaperUrl("");
+                        listResponse.setMessage("部分未上传");
+                    }else {
+                        studentDto.setPaperUrl(paper.getPaperUrl());
+                    }
+                    studentDtos.add(studentDto);
+                }
+                listResponse.setData(studentDtos);
             }
-            studentDtos.add(studentDto);
         }
-        listResponse.setData(studentDtos);
+
         return listResponse;
     }
 }

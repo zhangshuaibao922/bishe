@@ -32,8 +32,8 @@ public class OssImageUploadController {
     private static final String bucketName="bishe-zhangshuaibao922";
 
 
-    @PostMapping("/upload/{examId}")
-    public String uploadImages(@PathVariable String examId,@RequestParam("images") MultipartFile[] images) {
+    @PostMapping("/upload/{lessonId}/{examId}")
+    public String uploadImages(@PathVariable String lessonId,@PathVariable String examId,@RequestParam("images") MultipartFile[] images) {
         // 创建 OSS 客户端
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         System.out.println("开始上传");
@@ -54,7 +54,7 @@ public class OssImageUploadController {
                 // 上传文件
                 PutObjectResult putObjectResult = ossClient.putObject(bucketName, objectName, inputStream);
                 System.out.println("成功上传文件：" + objectName);
-                paperService.insertByExamId(examId,objectName);
+                paperService.insertByExamId(lessonId,examId,objectName);
             }
         } catch (IOException e) {
             e.printStackTrace();
