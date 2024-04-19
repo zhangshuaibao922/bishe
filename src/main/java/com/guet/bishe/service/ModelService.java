@@ -49,4 +49,6 @@ public interface ModelService extends IService<Model> {
     Response<List<Model>> queryAllById(String id);
 
     Response<Boolean> insertTestModelDto(TestModelDto testModelDto);
+
+    Response<Boolean> delete(Integer id);
 }

@@ -2,6 +2,8 @@ package com.guet.bishe.controller;
 
 
 import com.guet.bishe.entity.Paper;
+import com.guet.bishe.entity.Response;
+import com.guet.bishe.entity.StudentDto;
 import com.guet.bishe.service.PaperService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,8 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
- /**
+
+/**
  * 答题卡;(paper)表控制层
  * @author : cardo
  * @date : 2024-4-17
@@ -35,6 +39,13 @@ public class PaperController{
     public ResponseEntity<Paper> queryById(@PathVariable Integer id){
         return ResponseEntity.ok(paperService.queryById(id));
     }
+
+     @ApiOperation("通过ID查询单条数据")
+     @GetMapping("/exam/{lessonId}/{examId}")
+     public Response<List<StudentDto>> queryByIdExam(@PathVariable String lessonId,@PathVariable String examId){
+         return paperService.queryByIdExam(lessonId,examId);
+     }
+
     
     /** 
      * 新增数据

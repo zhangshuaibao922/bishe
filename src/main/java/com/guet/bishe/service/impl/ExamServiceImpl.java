@@ -109,9 +109,10 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
             for (ExamDto examDto :examDtos) {
                 String paperClassId = examDto.getPaperClassId();
                 if(paperClassId.length() == 0){
+                    examDto.setModelName("");
                 }else {
                     String s = map.get(paperClassId);
-                    examDto.setPaperClassId(s);
+                    examDto.setModelName(s);
                 }
             }
             listResponse.setData(examDtos);

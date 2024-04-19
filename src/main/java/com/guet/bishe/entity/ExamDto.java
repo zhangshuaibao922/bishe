@@ -56,7 +56,7 @@ public class ExamDto implements Serializable {
      * 答题卡模版id
      */
     @ApiModelProperty(name = "答题卡模版", notes = "")
-    public String ModelName;
+    public String modelName;
 
     /**
      * 考试日期

@@ -4,7 +4,9 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
+import com.guet.bishe.service.PaperService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.io.InputStream;
 @RequestMapping("/aliyun")
 public class OssImageUploadController {
 
+    @Autowired
+    PaperService paperService;
 
     private static final String endpoint="https://oss-cn-hongkong.aliyuncs.com";
 
@@ -50,6 +54,7 @@ public class OssImageUploadController {
                 // 上传文件
                 PutObjectResult putObjectResult = ossClient.putObject(bucketName, objectName, inputStream);
                 System.out.println("成功上传文件：" + objectName);
+                paperService.insertByExamId(examId,objectName);
             }
         } catch (IOException e) {
             e.printStackTrace();

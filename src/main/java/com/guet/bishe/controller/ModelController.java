@@ -95,7 +95,7 @@ public class ModelController{
      */
     @ApiOperation("通过主键删除数据")
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Integer id){
-        return ResponseEntity.ok(modelService.deleteById(id));
+    public Response<Boolean> delete(@PathVariable Integer id){
+        return modelService.delete(id);
     }
 }

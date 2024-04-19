@@ -34,5 +34,7 @@ public class Seting implements Serializable{
     /** 老师id */
     @ApiModelProperty(name = "老师id",notes = "")
     public String teacherId ;
-
+     /** 得分 */
+     @ApiModelProperty(name = "得分",notes = "")
+     public Integer count ;
 }

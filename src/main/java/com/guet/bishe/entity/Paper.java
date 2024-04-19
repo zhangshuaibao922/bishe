@@ -36,6 +36,9 @@ public class Paper implements Serializable{
     /** 总分 */
     @ApiModelProperty(name = "总分",notes = "")
     public Integer totalScore ;
+     /** 切割 */
+     @ApiModelProperty(name = "切割",notes = "0没切割 1切割")
+     public String cut ;
     /** 创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

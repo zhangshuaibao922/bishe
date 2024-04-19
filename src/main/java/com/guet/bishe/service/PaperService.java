@@ -2,6 +2,10 @@ package com.guet.bishe.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.Paper;
+import com.guet.bishe.entity.Response;
+import com.guet.bishe.entity.StudentDto;
+
+import java.util.List;
 
 
 /**
@@ -40,4 +44,8 @@ public interface PaperService extends IService<Paper>{
      * @return 是否成功
      */
     boolean deleteById(Integer id);
+
+    void insertByExamId(String examId, String objectName);
+
+    Response<List<StudentDto>> queryByIdExam(String lessonId, String examId);
 }

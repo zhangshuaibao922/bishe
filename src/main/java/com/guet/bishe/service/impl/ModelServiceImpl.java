@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -106,6 +107,7 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
             seting.setTeacherId(testModelDto.getTeacherId());
             seting.setAnswerId(String.valueOf(i+1));
             seting.setNum(1);
+            seting.setCount(10);
             int insert = setingMapper.insert(seting);
             if(insert<=0){
                 response.setData(false);
@@ -124,5 +126,28 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
         }
         response.setData(true);
         return response;
+    }
+
+    @Override
+    public Response<Boolean> delete(Integer id) {
+        Exam exam = examMapper.selectById(id);
+        Response<Boolean> response = new Response<>();
+        if(exam.getExamSet().length() != 0){
+            LambdaQueryWrapper<Seting> setingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            setingLambdaQueryWrapper.eq(Seting::getExamSet,exam.getExamSet());
+            int delete = setingMapper.delete(setingLambdaQueryWrapper);
+            if(delete<=0){
+                response.setData(false);
+                return response;
+            }
+        }
+        int delete = examMapper.deleteById(id);
+        if(delete < 0){
+            response.setData(false);
+            return response;
+        }else {
+            response.setData(true);
+            return response;
+        }
     }
 }

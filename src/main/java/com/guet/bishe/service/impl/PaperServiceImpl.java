@@ -1,16 +1,23 @@
 package com.guet.bishe.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.guet.bishe.entity.Paper;
+import com.guet.bishe.Utils.SnowflakeIdGenerator;
+import com.guet.bishe.entity.*;
+import com.guet.bishe.mapper.ChooseMapper;
 import com.guet.bishe.mapper.PaperMapper;
+import com.guet.bishe.mapper.StudentMapper;
 import com.guet.bishe.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 答题卡;(paper)表服务实现类
+ *
  * @author : cardo
  * @date : 2024-4-17
  */
@@ -18,53 +25,111 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements PaperService {
     @Autowired
     private PaperMapper paperMapper;
-    
-    /** 
-     * 通过ID查询单条数据 
+    @Autowired
+    private StudentMapper studentMapper;
+    @Autowired
+    private ChooseMapper chooseMapper;
+
+    /**
+     * 通过ID查询单条数据
      *
      * @param id 主键
      * @return 实例对象
      */
-    public Paper queryById(Integer id){
+    public Paper queryById(Integer id) {
 //        LambdaQueryWrapper<Paper> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        lambdaQueryWrapper.eq();
         return paperMapper.selectById(id);
     }
 
-    
-    /** 
+
+    /**
      * 新增数据
      *
      * @param paper 实例对象
      * @return 实例对象
      */
-    public boolean insert(Paper paper){
-        return paperMapper.insert(paper)>0;
+    public boolean insert(Paper paper) {
+        return paperMapper.insert(paper) > 0;
     }
-    
-    /** 
+
+    /**
      * 更新数据
      *
      * @param paper 实例对象
      * @return 实例对象
      */
-    public boolean update(Paper paper){
+    public boolean update(Paper paper) {
         //1. 根据条件动态更新
         LambdaQueryWrapper<Paper> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Paper::getId,paper.getId());
+        lambdaQueryWrapper.eq(Paper::getId, paper.getId());
         //2. 设置主键，并更新
-        return paperMapper.update(paper, lambdaQueryWrapper)>0;
+        return paperMapper.update(paper, lambdaQueryWrapper) > 0;
     }
-    
-    /** 
+
+    /**
      * 通过主键删除数据
      *
      * @param id 主键
      * @return 是否成功
      */
-    public boolean deleteById(Integer id){
+    public boolean deleteById(Integer id) {
 //        LambdaQueryWrapper<Paper> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        lambdaQueryWrapper.eq();
-        return paperMapper.deleteById(id)> 0;
+        return paperMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public void insertByExamId(String examId, String objectName) {
+        Paper paper = new Paper();
+        paper.setExamId(examId);
+        String[] split = objectName.split("/");
+        String[] split1 = split[2].split("\\.");
+        paper.setStudentId(split1[0]);
+        paper.setPaperUrl("http://zhangshuaibao.top/" + objectName);
+        SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1);
+        String s = snowflakeIdGenerator.nextIdAsString();
+        paper.setPaperId(s);
+        paper.setTotalScore(0);
+        paper.setCut("0");
+        Paper paper1 = paperMapper.selectOne(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId).eq(Paper::getStudentId, paper.getStudentId()));
+        if(paper1==null){
+            paperMapper.insert(paper);
+        }else {
+            paper.setId(paper1.getId());
+            paperMapper.updateById(paper);
+        }
+
+    }
+
+    @Override
+    public Response<List<StudentDto>> queryByIdExam(String lessonId, String examId) {
+        LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        chooseLambdaQueryWrapper.eq(Choose::getLessonId, lessonId);
+        List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
+        List<String> studenIds = chooses.stream().map(choose -> choose.studentId).toList();
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.in(Student::getStudentId, studenIds);
+        List<Student> studentList = studentMapper.selectList(studentLambdaQueryWrapper);
+        ArrayList<StudentDto> studentDtos = new ArrayList<>();
+        Response<List<StudentDto>> listResponse = new Response<>();
+        for (Student data : studentList) {
+            StudentDto studentDto = new StudentDto();
+            studentDto.setStudentId(data.getStudentId());
+            studentDto.setStudentName(data.getStudentName());
+            LambdaQueryWrapper<Paper> paperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            paperLambdaQueryWrapper.eq(Paper::getStudentId, data.getStudentId());
+            paperLambdaQueryWrapper.eq(Paper::getExamId, examId);
+            Paper paper = paperMapper.selectOne(paperLambdaQueryWrapper);
+            if(paper==null){
+                studentDto.setPaperUrl("");
+                listResponse.setMessage("部分未上传");
+            }else {
+                studentDto.setPaperUrl(paper.getPaperUrl());
+            }
+            studentDtos.add(studentDto);
+        }
+        listResponse.setData(studentDtos);
+        return listResponse;
     }
 }
