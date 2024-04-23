@@ -76,4 +76,7 @@ public class Exam implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime;
 
+    /** 是否完成 */
+    @ApiModelProperty(name = "是否完成",notes = "")
+    public Integer isDelete ;
 }

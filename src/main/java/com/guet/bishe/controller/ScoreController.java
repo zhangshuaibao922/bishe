@@ -2,6 +2,7 @@ package com.guet.bishe.controller;
 
 
 
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Score;
 import com.guet.bishe.service.ScoreService;
 import io.swagger.annotations.Api;
@@ -55,8 +56,8 @@ public class ScoreController{
      */
     @ApiOperation("更新数据")
     @PutMapping
-    public ResponseEntity<Boolean> edit(@RequestBody Score score){
-        return ResponseEntity.ok(scoreService.update(score));
+    public Response<Boolean> edit(@RequestBody Score score){
+        return scoreService.edit(score);
     }
     
     /** 

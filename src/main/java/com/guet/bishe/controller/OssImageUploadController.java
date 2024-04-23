@@ -4,6 +4,9 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.guet.bishe.entity.Exam;
+import com.guet.bishe.mapper.ExamMapper;
 import com.guet.bishe.service.PaperService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class OssImageUploadController {
 
     @Autowired
     PaperService paperService;
+
+    @Autowired
+    ExamMapper examMapper;
 
     private static final String endpoint="https://oss-cn-hongkong.aliyuncs.com";
 
@@ -54,6 +60,10 @@ public class OssImageUploadController {
                 // 上传文件
                 PutObjectResult putObjectResult = ossClient.putObject(bucketName, objectName, inputStream);
                 System.out.println("成功上传文件：" + objectName);
+
+
+                Exam exam = examMapper.selectOne(new LambdaQueryWrapper<Exam>().eq(Exam::getExamId, examId));
+
                 paperService.insertByExamId(lessonId,examId,objectName);
             }
         } catch (IOException e) {

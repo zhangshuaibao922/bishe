@@ -122,11 +122,17 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper, Lesson> impleme
 
     @Override
     public Response<List<LessonDto>> queryAllByTeacherId(String teacherId) {
+        Response<List<LessonDto>> listResponse = new Response<>();
         List<Instruct> instructs = instructMapper.selectList(new LambdaQueryWrapper<Instruct>().eq(Instruct::getTeacherId, teacherId));
+        if(instructs.size() == 0){
+            listResponse.setMessage("查询失败");
+            listResponse.setCode(201);
+            listResponse.setData(null);
+            return listResponse;
+        }
         LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
         lessonLambdaQueryWrapper.in(Lesson::getLessonId,instructs.stream().map(Instruct::getLessonId).toList());
         List<Lesson> list = lessonMapper.selectList(lessonLambdaQueryWrapper);
-        Response<List<LessonDto>> listResponse = new Response<>();
         if (list.size() == 0){
             listResponse.setMessage("查询失败");
             listResponse.setCode(201);

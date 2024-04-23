@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.Utils.SnowflakeIdGenerator;
 import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.ChooseMapper;
+import com.guet.bishe.mapper.ModelMapper;
 import com.guet.bishe.mapper.PaperMapper;
 import com.guet.bishe.mapper.StudentMapper;
 import com.guet.bishe.service.PaperService;
@@ -29,6 +30,8 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
     private StudentMapper studentMapper;
     @Autowired
     private ChooseMapper chooseMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * 通过ID查询单条数据
@@ -85,14 +88,16 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
         paper.setExamId(examId);
         String[] split = objectName.split("/");
         String[] split1 = split[2].split("\\.");
-        paper.setStudentId(split1[0]);
-        paper.setPaperUrl("http://zhangshuaibao.top/" + objectName);
+        String[] split2 = split1[0].split("-");
+        paper.setStudentId(split2[0]);
+        paper.setSequence(split2[1]);
+        paper.setPaperUrl(objectName);
         SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1);
         String s = snowflakeIdGenerator.nextIdAsString();
         paper.setPaperId(s);
         paper.setTotalScore(0);
         paper.setCut("0");
-        Paper paper1 = paperMapper.selectOne(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId).eq(Paper::getStudentId, paper.getStudentId()));
+        Paper paper1 = paperMapper.selectOne(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId).eq(Paper::getStudentId, paper.getStudentId()).eq(Paper::getSequence, paper.getSequence()));
         if(paper1==null){
             LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
             chooseLambdaQueryWrapper.eq(Choose::getLessonId,lessonId);
@@ -102,6 +107,7 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
                 paperMapper.insert(paper);
             }
         }else {
+            paper.setPaperId(paper1.getPaperId());
             LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
             chooseLambdaQueryWrapper.eq(Choose::getLessonId,lessonId);
             List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
@@ -134,20 +140,27 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
                 listResponse.setData(null);
             }else {
                 for (Student data : studentList) {
-                    StudentDto studentDto = new StudentDto();
-                    studentDto.setStudentId(data.getStudentId());
-                    studentDto.setStudentName(data.getStudentName());
                     LambdaQueryWrapper<Paper> paperLambdaQueryWrapper = new LambdaQueryWrapper<>();
                     paperLambdaQueryWrapper.eq(Paper::getStudentId, data.getStudentId());
                     paperLambdaQueryWrapper.eq(Paper::getExamId, examId);
-                    Paper paper = paperMapper.selectOne(paperLambdaQueryWrapper);
-                    if(paper==null){
+                    paperLambdaQueryWrapper.orderByAsc(Paper::getSequence);
+                    List<Paper> papers = paperMapper.selectList(paperLambdaQueryWrapper);
+                    if(papers.size()==0){
+                        StudentDto studentDto = new StudentDto();
+                        studentDto.setStudentId(data.getStudentId());
+                        studentDto.setStudentName(data.getStudentName());
                         studentDto.setPaperUrl("");
                         listResponse.setMessage("部分未上传");
-                    }else {
-                        studentDto.setPaperUrl(paper.getPaperUrl());
+                        studentDtos.add(studentDto);
+                    } else {
+                        for (Paper paper :papers) {
+                            StudentDto studentDto = new StudentDto();
+                            studentDto.setStudentId(data.getStudentId());
+                            studentDto.setStudentName(data.getStudentName());
+                            studentDto.setPaperUrl("http://zhangshuaibao.top/"+paper.getPaperUrl());
+                            studentDtos.add(studentDto);
+                        }
                     }
-                    studentDtos.add(studentDto);
                 }
                 listResponse.setData(studentDtos);
             }

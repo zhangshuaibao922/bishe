@@ -20,6 +20,8 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static net.sf.jsqlparser.parser.feature.Feature.insert;
+
 @SpringBootTest
 public class SampleTest {
     @Autowired
@@ -35,15 +37,15 @@ public class SampleTest {
         System.out.println(("----- selectAll method test ------"));
         Teacher teacher = new Teacher();
         teacher.setCollegeId("10");
-        teacher.setTeacherId("20100001");
-        teacher.setTeacherName("杜春城");
-        teacher.setTeacherPassword("root");
+        teacher.setTeacherId("11111");
+        teacher.setTeacherName("郑培林");
+        teacher.setTeacherPassword("111");
         teacher.setIdCardNo("411025200109224018");
         teacher.setMobilePhone("16696838939");
-        teacher.setAuthorityId("3");
+        teacher.setAuthorityId("2");
         teacher.setStatus("1");
-//        Teacher insert = teacherService.insert(teacher);
-//        System.out.println(insert);
+        boolean insert1 = teacherService.insert(teacher);
+        System.out.println(insert1);
 
 //        College college = new College();
 //        college.collegeId=UUID.randomUUID().toString();

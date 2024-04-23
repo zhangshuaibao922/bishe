@@ -1,6 +1,7 @@
 package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Score;
 
  /**
@@ -39,4 +40,6 @@ public interface ScoreService extends IService<Score> {
      * @return 是否成功
      */
     boolean deleteById(Integer id);
-}
+
+     Response<Boolean> edit(Score score);
+ }

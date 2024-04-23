@@ -44,10 +44,22 @@ public class ExamController{
       * @return 实例对象
       */
      @ApiOperation("通过ID查询单条数据")
-     @GetMapping("/all/{examClass}")
-     public Response<List<ExamDto>> queryByExamClass(@PathVariable String examClass){
-         return examService.queryByExamClass(examClass);
+     @GetMapping("/all/{examClass}/{teacherId}")
+     public Response<List<ExamDto>> queryByExamClass(@PathVariable String examClass,@PathVariable String teacherId){
+         return examService.queryByExamClass(examClass,teacherId);
      }
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param examClass 主键
+     * @return 实例对象
+     */
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping("/all/score/{examClass}")
+    public Response<List<ExamDto>> scoreQueryByExamClass(@PathVariable String examClass){
+        return examService.scoreQueryByExamClass(examClass);
+    }
 
     /** 
      * 新增数据

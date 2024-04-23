@@ -50,4 +50,7 @@ public class Paper implements Serializable{
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
 
+     /** 顺序 */
+     @ApiModelProperty(name = "顺序",notes = "")
+     public String sequence ;
 }

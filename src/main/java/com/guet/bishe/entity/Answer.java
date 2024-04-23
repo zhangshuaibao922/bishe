@@ -40,5 +40,6 @@ public class Answer implements Serializable{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
-
-}
+     @ApiModelProperty(name = "是否批改",notes = "")
+     public Integer isScore ;
+ }

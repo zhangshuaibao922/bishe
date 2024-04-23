@@ -1,12 +1,15 @@
 package com.guet.bishe.controller;
 
 import com.guet.bishe.entity.Answer;
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.service.AnswerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -32,6 +35,18 @@ public class AnswerController {
     @GetMapping("{id}")
     public ResponseEntity<Answer> queryById(@PathVariable Integer id) {
         return ResponseEntity.ok(answerService.queryById(id));
+    }
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param examId  answerId
+     * @return 实例对象
+     */
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping("/{examId}/{answerId}/{teacherId}")
+    public Response<List<Answer>> queryByExamIdAndTeacherId(@PathVariable String examId, @PathVariable String answerId, @PathVariable String teacherId) {
+        return answerService.queryByExamIdAndTeacherId(examId,answerId,teacherId);
     }
 
     /**

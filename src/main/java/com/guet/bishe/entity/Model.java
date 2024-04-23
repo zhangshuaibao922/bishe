@@ -35,5 +35,7 @@ public class Model implements Serializable{
      /** 数量 */
      @ApiModelProperty(name = "数量",notes = "")
      public String modelNumber ;
-
+     /** 答题卡数量 */
+     @ApiModelProperty(name = "答题卡数量",notes = "")
+     public String paperNumber ;
 }

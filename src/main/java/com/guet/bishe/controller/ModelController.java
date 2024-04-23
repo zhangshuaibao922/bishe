@@ -1,6 +1,7 @@
 package com.guet.bishe.controller;
 
 
+import com.guet.bishe.entity.ExamModelDto;
 import com.guet.bishe.entity.Model;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.TestModelDto;
@@ -74,6 +75,17 @@ public class ModelController{
         return modelService.insertTestModelDto(testModelDto);
     }
 
+    /**
+     * 新增数据
+     *
+     * @param examModelDto 实例对象
+     * @return 实例对象
+     */
+    @ApiOperation("新增数据")
+    @PostMapping("/exam")
+    public Response<Boolean> InsertExamModelDto(@RequestBody ExamModelDto examModelDto){
+        return modelService.insertExamModelDto(examModelDto);
+    }
     
     /** 
      * 更新数据

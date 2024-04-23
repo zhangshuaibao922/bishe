@@ -76,4 +76,8 @@ public class ExamDto implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String updateTime;
 
+    /** 是否完成 */
+    @ApiModelProperty(name = "是否完成",notes = "")
+    public Integer isDelete ;
+
 }

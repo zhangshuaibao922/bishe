@@ -44,7 +44,9 @@ public interface ExamService extends IService<Exam> {
      */
     boolean deleteById(Integer id);
 
-     Response<List<ExamDto>> queryByExamClass(String examClass);
+     Response<List<ExamDto>> queryByExamClass(String examClass,String teacherId);
 
     Response<List<Exam>> queryByExamName(String examName);
+
+    Response<List<ExamDto>> scoreQueryByExamClass(String examClass);
 }

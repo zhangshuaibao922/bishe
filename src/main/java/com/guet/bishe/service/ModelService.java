@@ -2,6 +2,7 @@ package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.guet.bishe.entity.ExamModelDto;
 import com.guet.bishe.entity.Model;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.TestModelDto;
@@ -51,4 +52,6 @@ public interface ModelService extends IService<Model> {
     Response<Boolean> insertTestModelDto(TestModelDto testModelDto);
 
     Response<Boolean> delete(Integer id);
+
+    Response<Boolean> insertExamModelDto(ExamModelDto examModelDto);
 }
