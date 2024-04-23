@@ -74,6 +74,7 @@ public class OssImageUploadController {
             ossClient.shutdown();
         }
 
+
         return "上传成功";
     }
 }

@@ -81,17 +81,25 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     }
 
     @Override
-    public Response<List<ExamDto>> queryByExamClass(String examClass,String teacherId){
+    public Response<List<ExamDto>> queryByExamClass(String examClass,String teacherId,String id){
         LambdaQueryWrapper<Instruct> instructLambdaQueryWrapper = new LambdaQueryWrapper<>();
         instructLambdaQueryWrapper.eq(Instruct::getTeacherId,teacherId);
         List<Instruct> instructs = instructMapper.selectList(instructLambdaQueryWrapper);
         List<String> lessonIds = instructs.stream().map(Instruct::getLessonId).distinct().toList();
         LambdaQueryWrapper<Exam> examLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        examLambdaQueryWrapper
-                .eq(Exam::getExamClass, examClass)
-                .in(Exam::getLessonId,lessonIds)
-                .isNull(Exam::getIsDelete)
-                .orderByDesc(Exam::getExamData);
+        if(id.equals("1")){
+            examLambdaQueryWrapper
+                    .eq(Exam::getExamClass, examClass)
+                    .in(Exam::getLessonId,lessonIds)
+                    .isNull(Exam::getIsDelete)
+                    .orderByDesc(Exam::getExamData);
+        }else if(id.equals("2")) {
+            examLambdaQueryWrapper
+                    .eq(Exam::getExamClass, examClass)
+                    .in(Exam::getLessonId,lessonIds)
+                    .eq(Exam::getIsDelete,1)
+                    .orderByDesc(Exam::getExamData);
+        }
         List<Exam> exams = examMapper.selectList(examLambdaQueryWrapper);
         Response<List<ExamDto>> listResponse = new Response<>();
         ArrayList<ExamDto> examDtos = new ArrayList<>();

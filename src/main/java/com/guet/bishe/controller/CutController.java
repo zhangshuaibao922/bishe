@@ -13,20 +13,20 @@ import com.guet.bishe.mapper.PaperMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.websocket.server.PathParam;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
-
+import java.util.Base64;
 /**
  * @author cardo
  * @Version 1.0
@@ -170,8 +170,7 @@ public class CutController {
                             }
                         }
                     }
-                }
-                else if (paperClassId.equals("2")) {
+                } else if (paperClassId.equals("2")) {
                     String objectName = paper.getPaperUrl();
                     InputStream inputStream = ossClient.getObject(bucketName, objectName).getObjectContent();
                     if (inputStream != null) {
@@ -206,9 +205,8 @@ public class CutController {
                         }
 
                     }
-                }
-                else if(paperClassId.equals("3")){
-                    if (paper.getSequence().equals("1")){
+                } else if (paperClassId.equals("3")) {
+                    if (paper.getSequence().equals("1")) {
                         String objectName = paper.getPaperUrl();
                         InputStream inputStream = ossClient.getObject(bucketName, objectName).getObjectContent();
                         BufferedImage image = ImageIO.read(inputStream);
@@ -229,18 +227,18 @@ public class CutController {
                                     null);
                             gr.dispose();
                         }
-                        count=0;
-                        int[][] chunkHeight=new int[][]{{0,533,633,813,1133},{0,120,410,1133},{0,120,1133}};
+                        count = 0;
+                        int[][] chunkHeight = new int[][]{{0, 533, 633, 813, 1133}, {0, 120, 410, 1133}, {0, 120, 1133}};
                         BufferedImage[] imgList = new BufferedImage[9];
                         for (int i = 0; i < chunkHeight.length; i++) {
-                            for (int j = 0; j < chunkHeight[i].length-1; j++) {
-                                imgList[count]=new BufferedImage(imgs[i].getWidth(),chunkHeight[i][j+1]-chunkHeight[i][j],imgs[i].getType());
+                            for (int j = 0; j < chunkHeight[i].length - 1; j++) {
+                                imgList[count] = new BufferedImage(imgs[i].getWidth(), chunkHeight[i][j + 1] - chunkHeight[i][j], imgs[i].getType());
                                 Graphics2D graphics = imgList[count++].createGraphics();
                                 graphics.drawImage(imgs[i],
-                                        0,0,
-                                        imgs[i].getWidth(),chunkHeight[i][j+1]-chunkHeight[i][j],
-                                        0,chunkHeight[i][j],
-                                        imgs[i].getWidth(),chunkHeight[i][j+1],
+                                        0, 0,
+                                        imgs[i].getWidth(), chunkHeight[i][j + 1] - chunkHeight[i][j],
+                                        0, chunkHeight[i][j],
+                                        imgs[i].getWidth(), chunkHeight[i][j + 1],
                                         null
                                 );
                                 graphics.dispose();
@@ -249,19 +247,19 @@ public class CutController {
                         BufferedImage img2 = imgList[3];
                         BufferedImage img5 = imgList[5];
                         // 创建合并后的图片
-                        int combinedWidth = Math.max(img2.getWidth(),img5.getWidth());
-                        int combinedHeight = img2.getHeight()+img5.getHeight();
+                        int combinedWidth = Math.max(img2.getWidth(), img5.getWidth());
+                        int combinedHeight = img2.getHeight() + img5.getHeight();
                         BufferedImage combinedImg = new BufferedImage(combinedWidth, combinedHeight, BufferedImage.TYPE_INT_RGB);
                         // 将两张图片绘制到合并后的图片中
                         combinedImg.createGraphics().drawImage(img2, 0, 0, null);
                         combinedImg.createGraphics().drawImage(img5, 0, img2.getHeight(), null);
                         BufferedImage[] newImages = new BufferedImage[8];
-                        int index=0;
+                        int index = 0;
                         for (int i = 0; i < imgList.length; i++) {
-                            if(i!=3&&i!=5){
-                                newImages[index++]=imgList[i];
-                            }else if(i==3){
-                                newImages[index++]=combinedImg;
+                            if (i != 3 && i != 5) {
+                                newImages[index++] = imgList[i];
+                            } else if (i == 3) {
+                                newImages[index++] = combinedImg;
                             }
                         }
 
@@ -271,7 +269,7 @@ public class CutController {
 
                         //上传到oss和数据库字段
                         String newObjectName = paper.getExamId() + "/questions/" + paper.getStudentId() + "/" + paper.getSequence() + "/";
-                        int num=1;
+                        int num = 1;
                         for (int i = 0; i < newImages.length; i++) {
                             //获取图片的二进制数据
                             // 将 BufferedImage 转换为 InputStream
@@ -284,12 +282,12 @@ public class CutController {
                             PutObjectResult putObjectResult = ossClient.putObject(bucketName, newObjectName + String.valueOf(i + 1) + ".jpg", inputStream1);
                             System.out.println("上传成功");
 
-                            if(i==1||i==2||i==3||i==5||i==7){
+                            if (i == 1 || i == 2 || i == 3 || i == 5 || i == 7) {
                                 LambdaQueryWrapper<Answer> answerLambdaQueryWrapper = new LambdaQueryWrapper<>();
                                 answerLambdaQueryWrapper.eq(Answer::getPaperId, paper.getPaperId()).eq(Answer::getAnswerId, String.valueOf(num));
                                 Answer oldanswer = ansMapper.selectOne(answerLambdaQueryWrapper);
                                 Answer answer1 = new Answer();
-                                answer1.setAnswerUrl(newObjectName + String.valueOf(i+1) + ".jpg");
+                                answer1.setAnswerUrl(newObjectName + String.valueOf(i + 1) + ".jpg");
                                 answer1.setAnswerId(String.valueOf(num));
                                 answer1.setPaperId(paper.getPaperId());
                                 if (oldanswer == null) {
@@ -303,7 +301,7 @@ public class CutController {
                             //保存到answer表中
                         }
 
-                    }else if(paper.getSequence().equals("2")){
+                    } else if (paper.getSequence().equals("2")) {
                         String objectName = paper.getPaperUrl();
                         InputStream inputStream = ossClient.getObject(bucketName, objectName).getObjectContent();
                         BufferedImage originalImage = ImageIO.read(inputStream);
@@ -376,6 +374,41 @@ public class CutController {
         }
         objectResponse.setData(true);
         return objectResponse;
+    }
+
+
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping()
+    public Response<String> getBase64Url(@PathParam("objectName")String objectName) {
+        // 创建 OSS 客户端
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        Response<String> stringResponse = new Response<>();
+        InputStream in = null;
+        try {
+            in = ossClient.getObject(bucketName, objectName).getObjectContent();
+            // 将图片文件转化为字节数组字符串，并对其进行 Base64 编码处理
+            byte[] data = new byte[in.available()];
+            in.read(data);
+            // 对字节数组进行 Base64 编码
+            String base64 = Base64.getEncoder().encodeToString(data);
+            stringResponse.setData(base64);
+            return stringResponse;
+        } catch (Exception e) {
+            // 处理异常
+            e.printStackTrace();
+            stringResponse.setCode(201);
+            return stringResponse;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            // 关闭 OSS 客户端
+            ossClient.shutdown();
+        }
     }
 
     /**

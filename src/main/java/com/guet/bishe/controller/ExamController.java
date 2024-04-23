@@ -44,9 +44,9 @@ public class ExamController{
       * @return 实例对象
       */
      @ApiOperation("通过ID查询单条数据")
-     @GetMapping("/all/{examClass}/{teacherId}")
-     public Response<List<ExamDto>> queryByExamClass(@PathVariable String examClass,@PathVariable String teacherId){
-         return examService.queryByExamClass(examClass,teacherId);
+     @GetMapping("/all/{examClass}/{teacherId}/{id}")
+     public Response<List<ExamDto>> queryByExamClass(@PathVariable String examClass,@PathVariable String teacherId,@PathVariable String id){
+         return examService.queryByExamClass(examClass,teacherId,id);
      }
 
     /**
