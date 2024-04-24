@@ -3,6 +3,7 @@ package com.guet.bishe.controller;
 
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Setting;
+import com.guet.bishe.entity.SettingDesDto;
 import com.guet.bishe.entity.SettingDto;
 import com.guet.bishe.service.SettingService;
 import io.swagger.annotations.Api;
@@ -78,5 +79,22 @@ public class SettingController {
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Integer id){
         return ResponseEntity.ok(settingService.deleteById(id));
+    }
+
+
+    @ApiOperation("更新数据")
+    @PutMapping("/des")
+    public Response<Boolean> editDes(@RequestBody List<SettingDesDto> settingDesDtos){
+        return settingService.editDes(settingDesDtos);
+    }
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping("/des/{examSet}/{teacherId}")
+    public Response<List<SettingDesDto>> queryDes(@PathVariable String examSet,@PathVariable String teacherId){
+        return settingService.queryDes(examSet,teacherId);
+    }
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping("/desById/{examSet}/{answerId}")
+    public Response<SettingDesDto> queryDesById(@PathVariable String examSet,@PathVariable String answerId){
+        return settingService.queryDesById(examSet,answerId);
     }
 }

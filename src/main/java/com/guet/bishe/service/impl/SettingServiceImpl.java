@@ -33,6 +33,8 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
     private AnswerMapper answerMapper;
     @Autowired
     private ScoreMapper scoreMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * 通过ID查询单条数据
@@ -192,5 +194,97 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
         }
 
         return listResponse;
+    }
+
+
+    @Override
+    public Response<List<SettingDesDto>> queryDes(String examSet, String teacherId) {
+        Response<List<SettingDesDto>> listResponse = new Response<>();
+        LambdaQueryWrapper<Exam> examLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        examLambdaQueryWrapper.eq(Exam::getExamSet,examSet);
+        Exam exam = examMapper.selectOne(examLambdaQueryWrapper);
+
+        LambdaQueryWrapper<Model> modelLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        modelLambdaQueryWrapper.eq(Model::getPaperClassId,exam.getPaperClassId());
+        Model model = modelMapper.selectOne(modelLambdaQueryWrapper);
+
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < Integer.parseInt(model.getModelNumber()); i++) {
+            strings.add(String.valueOf(i+1));
+        }
+
+        LambdaQueryWrapper<Setting> settingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        settingLambdaQueryWrapper.in(Setting::getAnswerId,strings)
+                .eq(Setting::getTeacherId,teacherId)
+                .eq(Setting::getExamSet,examSet);
+        List<Setting> settings = settingMapper.selectList(settingLambdaQueryWrapper);
+        ArrayList<SettingDesDto> settingDesDtos = new ArrayList<>();
+        if(settings.get(0).getDescription()==null){
+            for (int i = 0; i < Integer.parseInt(model.getModelNumber()); i++) {
+                SettingDesDto settingDesDto = new SettingDesDto();
+                settingDesDto.setExamSet(examSet);
+                settingDesDto.setAnswerId(String.valueOf(i+1));
+                settingDesDto.setDescription(null);
+
+                settingDesDtos.add(settingDesDto);
+            }
+            listResponse.setCode(201);
+            listResponse.setData(settingDesDtos);
+        }else {
+            List<String> list = settings.stream().map(Setting::getDescription).toList();
+            for (int i = 0; i < Integer.parseInt(model.getModelNumber()); i++) {
+                SettingDesDto settingDesDto = new SettingDesDto();
+                settingDesDto.setExamSet(examSet);
+                settingDesDto.setAnswerId(String.valueOf(i+1));
+                settingDesDto.setDescription(list.get(i));
+
+                settingDesDtos.add(settingDesDto);
+            }
+            listResponse.setData(settingDesDtos);
+            listResponse.setCode(200);
+        }
+        return listResponse;
+    }
+
+    @Override
+    public Response<Boolean> editDes(List<SettingDesDto> settingDesDtos) {
+        Response<Boolean> response = new Response<>();
+        for (SettingDesDto settingDesDto : settingDesDtos){
+            LambdaQueryWrapper<Setting> settingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            settingLambdaQueryWrapper
+                    .eq(Setting::getExamSet,settingDesDto.getExamSet())
+                    .eq(Setting::getAnswerId,settingDesDto.getAnswerId());
+            List<Setting> settings = settingMapper.selectList(settingLambdaQueryWrapper);
+            for (Setting setting :settings){
+                setting.setDescription(settingDesDto.getDescription());
+                int i = settingMapper.updateById(setting);
+                if(i<=0){
+                    response.setData(false);
+                    return response;
+                }
+            }
+        }
+        response.setData(true);
+        return response;
+    }
+
+    @Override
+    public Response<SettingDesDto> queryDesById(String examSet, String answerId) {
+        Response<SettingDesDto> settingDesDtoResponse = new Response<>();
+        LambdaQueryWrapper<Setting> settingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        settingLambdaQueryWrapper.eq(Setting::getExamSet,examSet)
+                .eq(Setting::getAnswerId,answerId);
+        List<Setting> settings = settingMapper.selectList(settingLambdaQueryWrapper);
+        SettingDesDto settingDesDto = new SettingDesDto();
+        settingDesDto.setExamSet(examSet);
+        settingDesDto.setAnswerId(answerId);
+        if(settings.get(0).getDescription()==null){
+            settingDesDto.setDescription("");
+        }else {
+            settingDesDto.setDescription(settings.get(0).getDescription());
+        }
+
+        settingDesDtoResponse.setData(settingDesDto);
+        return settingDesDtoResponse;
     }
 }

@@ -1,10 +1,11 @@
 package com.guet.bishe.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Score;
+import com.guet.bishe.entity.*;
 
- /**
+import java.util.List;
+
+/**
  * 得分;(score)表服务接口
  * @author : cardo
  * @date : 2024-4-17
@@ -42,4 +43,6 @@ public interface ScoreService extends IService<Score> {
     boolean deleteById(Integer id);
 
      Response<Boolean> edit(Score score);
+
+     Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId);
  }

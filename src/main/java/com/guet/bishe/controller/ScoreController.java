@@ -2,8 +2,7 @@ package com.guet.bishe.controller;
 
 
 
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Score;
+import com.guet.bishe.entity.*;
 import com.guet.bishe.service.ScoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
- /**
+
+/**
  * 得分;(score)表控制层
  * @author : cardo
  * @date : 2024-4-17
@@ -71,4 +72,10 @@ public class ScoreController{
     public ResponseEntity<Boolean> deleteById(@PathVariable Integer id){
         return ResponseEntity.ok(scoreService.deleteById(id));
     }
+
+     @ApiOperation("通过ID查询单条数据")
+     @GetMapping("/getScore/{examId}/{lessonId}")
+     public Response<List<StudentScoreDto>> queryAllScore(@PathVariable String examId,@PathVariable String lessonId){
+         return scoreService.queryByAllScore(examId,lessonId);
+     }
 }

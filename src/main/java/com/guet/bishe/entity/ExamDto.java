@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 考试;
@@ -79,5 +80,9 @@ public class ExamDto implements Serializable {
     /** 是否完成 */
     @ApiModelProperty(name = "是否完成",notes = "")
     public Integer isDelete ;
+
+    /** 是否完成 */
+    @ApiModelProperty(name = "链接",notes = "")
+    public List<Modelurl> models;
 
 }

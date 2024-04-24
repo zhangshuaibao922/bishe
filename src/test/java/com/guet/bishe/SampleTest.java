@@ -10,6 +10,7 @@ import com.guet.bishe.mapper.LessonMapper;
 import com.guet.bishe.mapper.TeacherMapper;
 import com.guet.bishe.service.CollegeService;
 import com.guet.bishe.service.LoginService;
+import com.guet.bishe.service.ScoreService;
 import com.guet.bishe.service.TeacherService;
 import com.guet.bishe.service.impl.LessonServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static net.sf.jsqlparser.parser.feature.Feature.insert;
 
@@ -32,20 +34,26 @@ public class SampleTest {
     private TeacherService teacherService;
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private ScoreService scoreService;
     @Test
     public void testSelect() {
-        System.out.println(("----- selectAll method test ------"));
-        Teacher teacher = new Teacher();
-        teacher.setCollegeId("10");
-        teacher.setTeacherId("11111");
-        teacher.setTeacherName("郑培林");
-        teacher.setTeacherPassword("111");
-        teacher.setIdCardNo("411025200109224018");
-        teacher.setMobilePhone("16696838939");
-        teacher.setAuthorityId("2");
-        teacher.setStatus("1");
-        boolean insert1 = teacherService.insert(teacher);
-        System.out.println(insert1);
+        Exam exam = new Exam();
+//        exam.setExamId("17845285671407616");
+//        Response<List<StudentScoreDto>> listResponse = scoreService.queryByAllScore(exam);
+        System.out.println(123);
+//        System.out.println(("----- selectAll method test ------"));
+//        Teacher teacher = new Teacher();
+//        teacher.setCollegeId("10");
+//        teacher.setTeacherId("11111");
+//        teacher.setTeacherName("郑培林");
+//        teacher.setTeacherPassword("111");
+//        teacher.setIdCardNo("411025200109224018");
+//        teacher.setMobilePhone("16696838939");
+//        teacher.setAuthorityId("2");
+//        teacher.setStatus("1");
+//        boolean insert1 = teacherService.insert(teacher);
+//        System.out.println(insert1);
 
 //        College college = new College();
 //        college.collegeId=UUID.randomUUID().toString();

@@ -6,6 +6,7 @@ import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.ExamMapper;
 import com.guet.bishe.mapper.InstructMapper;
 import com.guet.bishe.mapper.ModelMapper;
+import com.guet.bishe.mapper.ModelurlMapper;
 import com.guet.bishe.service.ExamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     private ModelMapper modelMapper;
     @Autowired
     private InstructMapper instructMapper;
+    @Autowired
+    private ModelurlMapper modelurlMapper;
 
     /**
      * 通过ID查询单条数据
@@ -127,6 +130,15 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
                     String s = map.get(paperClassId);
                     examDto.setModelName(s);
                 }
+                LambdaQueryWrapper<Modelurl> modelurlLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                modelurlLambdaQueryWrapper.eq(Modelurl::getPaperClassId,examDto.getPaperClassId());
+                List<Modelurl> modelurls = modelurlMapper.selectList(modelurlLambdaQueryWrapper);
+                if(modelurls.size()==0){
+                    examDto.setModels(null);
+                }else {
+                    examDto.setModels(modelurls);
+                }
+
             }
             listResponse.setData(examDtos);
             listResponse.setMessage("查询成功");
@@ -185,6 +197,14 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
                 } else {
                     String s = map.get(paperClassId);
                     examDto.setModelName(s);
+                }
+                LambdaQueryWrapper<Modelurl> modelurlLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                modelurlLambdaQueryWrapper.eq(Modelurl::getPaperClassId,examDto.getPaperClassId());
+                List<Modelurl> modelurls = modelurlMapper.selectList(modelurlLambdaQueryWrapper);
+                if(modelurls.size()==0){
+                    examDto.setModels(null);
+                }else {
+                    examDto.setModels(modelurls);
                 }
             }
             listResponse.setData(examDtos);

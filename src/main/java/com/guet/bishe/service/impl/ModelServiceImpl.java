@@ -146,13 +146,15 @@ public class ModelServiceImpl extends ServiceImpl<ModelMapper, Model> implements
             paperMapper.delete(paperLambdaQueryWrapper);
             List<String> paperIds =  papers.stream().map(Paper::getPaperId).distinct().toList();
 
-            LambdaQueryWrapper<Answer> answerLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            answerLambdaQueryWrapper.in(Answer::getPaperId,paperIds);
-            answerMapper.delete(answerLambdaQueryWrapper);
+            for (String paperID : paperIds) {
+                LambdaQueryWrapper<Answer> answerLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                answerLambdaQueryWrapper.eq(Answer::getPaperId,paperID);
+                answerMapper.delete(answerLambdaQueryWrapper);
 
-            LambdaQueryWrapper<Score> scoreLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            scoreLambdaQueryWrapper.in(Score::getPaperId,paperIds);
-            scoreMapper.delete(scoreLambdaQueryWrapper);
+                LambdaQueryWrapper<Score> scoreLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                scoreLambdaQueryWrapper.in(Score::getPaperId,paperID);
+                scoreMapper.delete(scoreLambdaQueryWrapper);
+            }
         }
         int delete = examMapper.deleteById(id);
         if (delete < 0) {

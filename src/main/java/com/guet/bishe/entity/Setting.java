@@ -38,4 +38,7 @@ public class Setting implements Serializable{
      public Integer count ;
      @ApiModelProperty(name = "是否批改完成",notes = "1完成 ")
      public String allScore ;
-}
+     /** 答案备注 */
+     @ApiModelProperty(name = "答案备注",notes = "")
+     public String description ;
+ }

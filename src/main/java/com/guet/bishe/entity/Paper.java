@@ -33,9 +33,9 @@ public class Paper implements Serializable{
     /** 答题卡链接 */
     @ApiModelProperty(name = "答题卡链接",notes = "")
     public String paperUrl ;
-    /** 总分 */
-    @ApiModelProperty(name = "总分",notes = "")
-    public Integer totalScore ;
+     /** 总分 */
+     @ApiModelProperty(name = "总分",notes = "")
+     public Double totalScore ;
      /** 切割 */
      @ApiModelProperty(name = "切割",notes = "0没切割 1切割")
      public String cut ;

@@ -2,16 +2,14 @@ package com.guet.bishe.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.guet.bishe.entity.Answer;
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Score;
-import com.guet.bishe.mapper.AnswerMapper;
-import com.guet.bishe.mapper.ScoreMapper;
+import com.guet.bishe.entity.*;
+import com.guet.bishe.mapper.*;
 import com.guet.bishe.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -29,6 +27,16 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     private ScoreMapper scoreMapper;
     @Autowired
     private AnswerMapper answerMapper;
+    @Autowired
+    private PaperMapper paperMapper;
+    @Autowired
+    private ExamMapper examMapper;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private ChooseMapper chooseMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     /**
      * 通过ID查询单条数据
@@ -153,5 +161,61 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
                 return response;
             }
         }
+    }
+
+    @Override
+    public Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId) {
+        //计算得分
+        List<Paper> papers = paperMapper.selectList(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId));
+        for (Paper paper : papers){
+            List<Answer> answers = answerMapper.selectList(new LambdaQueryWrapper<Answer>()
+                    .eq(Answer::getPaperId, paper.getPaperId()));
+            List<String> answerIds = answers.stream().map(Answer::getAnswerId).distinct().toList();
+            List<Score> scores = scoreMapper.selectList(new LambdaQueryWrapper<Score>()
+                    .eq(Score::getPaperId, paper.getPaperId())
+                    .in(Score::getAnswerId, answerIds)
+                    .orderByAsc(Score::getAnswerId));
+            double allCount = 0.000000;
+            for (int i = 0; i < scores.size();) {
+                Integer num = scores.get(i).getNum();
+                double number=0.000000;
+                for (int j = 0; j < num; j++) {
+                    number=number+scores.get(i+j).getAnswerScore();
+                }
+                i=i+num;
+                allCount=allCount+number/num;
+            }
+            if (allCount!=0){
+                paper.setTotalScore(allCount);
+                paperMapper.updateById(paper);
+            }
+        }
+        //查询结果返回
+        Response<List<StudentScoreDto>> listResponse = new Response<>();
+        ArrayList<StudentScoreDto> studentScoreDtos = new ArrayList<StudentScoreDto>();
+        List<Choose> chooses = chooseMapper.selectList(new LambdaQueryWrapper<Choose>().eq(Choose::getLessonId,lessonId));
+        List<String> list = chooses.stream().map(Choose::getStudentId).toList();
+        List<Student> students = studentMapper.selectList(new LambdaQueryWrapper<Student>().in(Student::getStudentId, list));
+        for (Student student : students) {
+            StudentScoreDto studentScoreDto = new StudentScoreDto();
+            studentScoreDto.setStudentName(student.getStudentName());
+            studentScoreDto.setStudentId(student.getStudentId());
+            studentScoreDto.setExamId(examId);
+
+            LambdaQueryWrapper<Paper> paperLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            paperLambdaQueryWrapper.eq(Paper::getStudentId, student.getStudentId());
+            paperLambdaQueryWrapper.eq(Paper::getExamId, examId);
+            paperLambdaQueryWrapper.orderByAsc(Paper::getSequence);
+            List<Paper> studenpaper = paperMapper.selectList(paperLambdaQueryWrapper);
+            double avgScore = 0.00000;
+            for (Paper paper :studenpaper) {
+                avgScore=avgScore+paper.getTotalScore();
+            }
+            studentScoreDto.setTotalScore(avgScore);
+
+            studentScoreDtos.add(studentScoreDto);
+        }
+        listResponse.setData(studentScoreDtos);
+        return listResponse;
     }
 }

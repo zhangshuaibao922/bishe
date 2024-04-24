@@ -95,7 +95,7 @@ public class PaperServiceImpl extends ServiceImpl<PaperMapper, Paper> implements
         SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(1);
         String s = snowflakeIdGenerator.nextIdAsString();
         paper.setPaperId(s);
-        paper.setTotalScore(0);
+        paper.setTotalScore(0.000000);
         paper.setCut("0");
         Paper paper1 = paperMapper.selectOne(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId).eq(Paper::getStudentId, paper.getStudentId()).eq(Paper::getSequence, paper.getSequence()));
         if(paper1==null){
