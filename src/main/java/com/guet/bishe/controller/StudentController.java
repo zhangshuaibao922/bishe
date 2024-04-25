@@ -1,6 +1,7 @@
 package com.guet.bishe.controller;
 
 
+import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.entity.StudentInfo;
 import com.guet.bishe.service.StudentService;
@@ -70,5 +71,11 @@ public class StudentController{
     @DeleteMapping("{studentId}")
     public ResponseEntity<Boolean> deleteById(@PathVariable String studentId){
         return ResponseEntity.ok(studentService.deleteByStudentId(studentId));
+    }
+
+    @ApiOperation("查询学生信息")
+    @GetMapping("/getInfo/{studentId}")
+    public Response<Student> getStudentInfo(@PathVariable String studentId){
+        return studentService.getStudentInfo(studentId);
     }
 }

@@ -39,6 +39,11 @@ public class TeacherController{
     public ResponseEntity<List<Teacher>> queryById(@PathVariable String teacherId){
         return ResponseEntity.ok(teacherService.queryByTeacherId(teacherId));
     }
+     @ApiOperation("通过ID查询单条数据")
+     @GetMapping("select/{teacherName}")
+     public Response<List<Teacher>> queryByName(@PathVariable String teacherName){
+         return teacherService.selectByName(teacherName);
+     }
 
      /**
       * 查询全部课程
@@ -49,7 +54,7 @@ public class TeacherController{
      {
          return teacherService.queryAll();
      }
-    
+
     /**
      * 分页查询
      *

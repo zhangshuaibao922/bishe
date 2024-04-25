@@ -45,7 +45,6 @@ public class Teacher implements Serializable{
     public String authorityId ;
     /** 状态 */
     @ApiModelProperty(name = "状态",notes = "")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String status ;
     /** 创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "")

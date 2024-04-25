@@ -42,4 +42,6 @@ public interface StudentService{
      * @return 是否成功
      */
     boolean deleteByStudentId(String studentId);
+
+    Response<Student> getStudentInfo(String studentId);
 }

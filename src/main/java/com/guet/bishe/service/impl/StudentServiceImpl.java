@@ -92,4 +92,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         lambdaQueryWrapper.eq(Student::getStudentId,studentId);
         return studentMapper.delete(lambdaQueryWrapper)> 0;
     }
+
+    @Override
+    public Response<Student> getStudentInfo(String studentId) {
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.eq(Student::getStudentId,studentId);
+        Student student = studentMapper.selectOne(studentLambdaQueryWrapper);
+        Response<Student> studentResponse = new Response<>();
+        studentResponse.setData(student);
+        return studentResponse;
+    }
 }

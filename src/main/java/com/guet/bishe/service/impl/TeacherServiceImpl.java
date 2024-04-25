@@ -80,10 +80,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      */
     public boolean update(Teacher teacher) {
         //1. 根据条件动态更新
-        LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, teacher.getTeacherId());
         //2. 设置主键，并更新
-        int update = teacherMapper.update(teacher, teacherLambdaQueryWrapper);
+        int update = teacherMapper.updateById(teacher);
         return update > 0;
     }
 
@@ -106,6 +104,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         Response<List<Teacher>> listResponse = new Response<>();
         listResponse.setMessage("查询成功");
         listResponse.setData(teacherList);
+        return listResponse;
+    }
+
+    @Override
+    public Response<List<Teacher>> selectByName(String teacherName) {
+        LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        teacherLambdaQueryWrapper.like(Teacher::getTeacherName, teacherName);
+        List<Teacher> teachers = teacherMapper.selectList(teacherLambdaQueryWrapper);
+        Response<List<Teacher>> listResponse = new Response<>();
+        listResponse.setData(teachers);
         return listResponse;
     }
 

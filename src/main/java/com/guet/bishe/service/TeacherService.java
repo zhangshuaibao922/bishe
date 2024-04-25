@@ -55,4 +55,6 @@ public interface TeacherService extends IService<Teacher> {
     boolean deleteByTeacherId(String teacherId);
 
     Response<List<Teacher>> queryAll();
+
+    Response<List<Teacher>> selectByName(String teacherName);
 }
