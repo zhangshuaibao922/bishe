@@ -3,10 +3,7 @@ package com.guet.bishe.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guet.bishe.Utils.SnowflakeIdGenerator;
 import com.guet.bishe.entity.*;
-import com.guet.bishe.mapper.ExamMapper;
-import com.guet.bishe.mapper.InstructMapper;
-import com.guet.bishe.mapper.ModelMapper;
-import com.guet.bishe.mapper.ModelurlMapper;
+import com.guet.bishe.mapper.*;
 import com.guet.bishe.service.ExamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,8 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     private InstructMapper instructMapper;
     @Autowired
     private ModelurlMapper modelurlMapper;
+    @Autowired
+    private ChooseMapper chooseMapper;
 
     /**
      * 通过ID查询单条数据
@@ -88,7 +87,14 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
         LambdaQueryWrapper<Instruct> instructLambdaQueryWrapper = new LambdaQueryWrapper<>();
         instructLambdaQueryWrapper.eq(Instruct::getTeacherId,teacherId);
         List<Instruct> instructs = instructMapper.selectList(instructLambdaQueryWrapper);
-        List<String> lessonIds = instructs.stream().map(Instruct::getLessonId).distinct().toList();
+        List<String> lessonIds;
+        if(instructs.size()==0){
+            List<Choose> chooses = chooseMapper.selectList(new LambdaQueryWrapper<Choose>()
+                    .eq(Choose::getStudentId, teacherId));
+            lessonIds=chooses.stream().map(Choose::getLessonId).distinct().toList();
+        }else {
+            lessonIds = instructs.stream().map(Instruct::getLessonId).distinct().toList();
+        }
         LambdaQueryWrapper<Exam> examLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if(id.equals("1")){
             examLambdaQueryWrapper

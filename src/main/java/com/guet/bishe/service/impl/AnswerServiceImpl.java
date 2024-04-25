@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -154,6 +155,37 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
             listResponse.setData(null);
             listResponse.setCode(201);
         }
+        return listResponse;
+    }
+
+    @Override
+    public Response<List<AnswerDto>> getStudentScoreAllAnswer(StudentScoreDto studentScoreDto) {
+        List<Paper> papers = paperMapper.selectList(new LambdaQueryWrapper<Paper>()
+                .eq(Paper::getExamId, studentScoreDto.examId)
+                .eq(Paper::getStudentId, studentScoreDto.studentId));
+        Response<List<AnswerDto>> listResponse = new Response<List<AnswerDto>>();
+        ArrayList<AnswerDto> answerDtos = new ArrayList<AnswerDto>();
+        for (Paper paper :papers){
+            List<Answer> answers = answerMapper.selectList(new LambdaQueryWrapper<Answer>()
+                    .eq(Answer::getPaperId, paper.paperId)
+                    .orderByAsc(Answer::getAnswerId));
+            for (Answer answer :answers) {
+                AnswerDto answerDto = new AnswerDto();
+                answerDto.setAnswerId(answer.answerId);
+                answerDto.setPaperId(paper.paperId);
+                answerDto.setAnswerUrl("http://zhangshuaibao.top/"+answer.answerUrl);
+                List<Score> scores = scoreMapper.selectList(new LambdaQueryWrapper<Score>()
+                        .eq(Score::getPaperId, paper.paperId)
+                        .eq(Score::getAnswerId, answer.answerId));
+                double AllScore =0.000000;
+                for (Score c : scores){
+                    AllScore=AllScore+c.answerScore;
+                }
+                answerDto.setAvgScore(AllScore/scores.size());
+                answerDtos.add(answerDto);
+            }
+        }
+        listResponse.setData(answerDtos);
         return listResponse;
     }
 }

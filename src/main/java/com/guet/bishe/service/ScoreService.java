@@ -44,5 +44,5 @@ public interface ScoreService extends IService<Score> {
 
      Response<Boolean> edit(Score score);
 
-     Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId);
+     Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId,String studentId);
  }

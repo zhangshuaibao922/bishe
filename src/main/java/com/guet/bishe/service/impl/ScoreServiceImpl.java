@@ -164,36 +164,46 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     }
 
     @Override
-    public Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId) {
+    public Response<List<StudentScoreDto>> queryByAllScore(String examId,String lessonId,String studentId) {
         //计算得分
         List<Paper> papers = paperMapper.selectList(new LambdaQueryWrapper<Paper>().eq(Paper::getExamId, examId));
         for (Paper paper : papers){
-            List<Answer> answers = answerMapper.selectList(new LambdaQueryWrapper<Answer>()
-                    .eq(Answer::getPaperId, paper.getPaperId()));
-            List<String> answerIds = answers.stream().map(Answer::getAnswerId).distinct().toList();
-            List<Score> scores = scoreMapper.selectList(new LambdaQueryWrapper<Score>()
-                    .eq(Score::getPaperId, paper.getPaperId())
-                    .in(Score::getAnswerId, answerIds)
-                    .orderByAsc(Score::getAnswerId));
-            double allCount = 0.000000;
-            for (int i = 0; i < scores.size();) {
-                Integer num = scores.get(i).getNum();
-                double number=0.000000;
-                for (int j = 0; j < num; j++) {
-                    number=number+scores.get(i+j).getAnswerScore();
+            if(paper.totalScore>0){
+            }else {
+                List<Answer> answers = answerMapper.selectList(new LambdaQueryWrapper<Answer>()
+                        .eq(Answer::getPaperId, paper.getPaperId()));
+                List<String> answerIds = answers.stream().map(Answer::getAnswerId).distinct().toList();
+                List<Score> scores = scoreMapper.selectList(new LambdaQueryWrapper<Score>()
+                        .eq(Score::getPaperId, paper.getPaperId())
+                        .in(Score::getAnswerId, answerIds)
+                        .orderByAsc(Score::getAnswerId));
+                double allCount = 0.000000;
+                for (int i = 0; i < scores.size();) {
+                    Integer num = scores.get(i).getNum();
+                    double number=0.000000;
+                    for (int j = 0; j < num; j++) {
+                        number=number+scores.get(i+j).getAnswerScore();
+                    }
+                    i=i+num;
+                    allCount=allCount+number/num;
                 }
-                i=i+num;
-                allCount=allCount+number/num;
-            }
-            if (allCount!=0){
-                paper.setTotalScore(allCount);
-                paperMapper.updateById(paper);
+                if (allCount!=0){
+                    paper.setTotalScore(allCount);
+                    paperMapper.updateById(paper);
+                }
             }
         }
         //查询结果返回
         Response<List<StudentScoreDto>> listResponse = new Response<>();
         ArrayList<StudentScoreDto> studentScoreDtos = new ArrayList<StudentScoreDto>();
-        List<Choose> chooses = chooseMapper.selectList(new LambdaQueryWrapper<Choose>().eq(Choose::getLessonId,lessonId));
+        List<Choose> chooses;
+        if(Objects.equals(studentId, "1")){
+            chooses = chooseMapper.selectList(new LambdaQueryWrapper<Choose>().eq(Choose::getLessonId,lessonId));
+
+        }else {
+            chooses = chooseMapper.selectList(new LambdaQueryWrapper<Choose>().eq(Choose::getLessonId,lessonId)
+                    .eq(Choose::getStudentId,studentId));
+        }
         List<String> list = chooses.stream().map(Choose::getStudentId).toList();
         List<Student> students = studentMapper.selectList(new LambdaQueryWrapper<Student>().in(Student::getStudentId, list));
         for (Student student : students) {

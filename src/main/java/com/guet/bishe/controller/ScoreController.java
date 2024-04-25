@@ -74,8 +74,8 @@ public class ScoreController{
     }
 
      @ApiOperation("通过ID查询单条数据")
-     @GetMapping("/getScore/{examId}/{lessonId}")
-     public Response<List<StudentScoreDto>> queryAllScore(@PathVariable String examId,@PathVariable String lessonId){
-         return scoreService.queryByAllScore(examId,lessonId);
+     @GetMapping("/getScore/{examId}/{lessonId}/{studentId}")
+     public Response<List<StudentScoreDto>> queryAllScore(@PathVariable String examId,@PathVariable String lessonId,@PathVariable String studentId){
+         return scoreService.queryByAllScore(examId,lessonId,studentId);
      }
 }

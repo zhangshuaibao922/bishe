@@ -1,7 +1,9 @@
 package com.guet.bishe.controller;
 
 import com.guet.bishe.entity.Answer;
+import com.guet.bishe.entity.AnswerDto;
 import com.guet.bishe.entity.Response;
+import com.guet.bishe.entity.StudentScoreDto;
 import com.guet.bishe.service.AnswerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -83,5 +85,17 @@ public class AnswerController {
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Integer id) {
         return ResponseEntity.ok(answerService.deleteById(id));
+    }
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param studentScoreDto 主键
+     * @return 是否成功
+     */
+    @ApiOperation("学生每道题成绩")
+    @PutMapping("/getStudentScore")
+    public Response<List<AnswerDto>> getStudentScoreAllAnswer(@RequestBody StudentScoreDto studentScoreDto) {
+        return answerService.getStudentScoreAllAnswer(studentScoreDto);
     }
 }
