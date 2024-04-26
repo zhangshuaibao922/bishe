@@ -65,8 +65,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      */
     public boolean insert(Student student){
         return studentMapper.insert(student)>0;
+
+
     }
-    
+
     /** 
      * 更新数据
      *
