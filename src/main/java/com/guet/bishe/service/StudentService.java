@@ -44,4 +44,10 @@ public interface StudentService{
     boolean deleteByStudentId(String studentId);
 
     Response<Student> getStudentInfo(String studentId);
+
+    Response<List<Student>> getAll();
+
+    Response<Boolean> delete(Integer id);
+
+    Response<List<Student>> getLikeStudents(String studentId);
 }

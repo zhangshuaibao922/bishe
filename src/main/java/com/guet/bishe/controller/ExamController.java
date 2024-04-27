@@ -24,6 +24,19 @@ import java.util.List;
 public class ExamController{
     @Autowired
     private ExamService examService;
+
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param examId 主键
+     * @return 实例对象
+     */
+    @ApiOperation("通过ID查询单条数据")
+    @GetMapping("getModelClass/{examId}")
+    public Response<String> getModelClass(@PathVariable String examId){
+        return examService.getModelClass(examId);
+    }
     
     /** 
      * 通过ID查询单条数据 

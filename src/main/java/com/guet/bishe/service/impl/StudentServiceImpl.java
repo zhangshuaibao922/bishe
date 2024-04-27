@@ -104,4 +104,34 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         studentResponse.setData(student);
         return studentResponse;
     }
+
+    @Override
+    public Response<List<Student>> getAll() {
+        List<Student> students = studentMapper.selectList(null);
+        Response<List<Student>> listResponse = new Response<>();
+        listResponse.setData(students);
+        return listResponse;
+    }
+
+    @Override
+    public Response<Boolean> delete(Integer id) {
+        int i = studentMapper.deleteById(id);
+        Response<Boolean> response = new Response<>();
+        if(i>0){
+            response.setData(true);
+        }else {
+            response.setData(false);
+        }
+        return response;
+    }
+
+    @Override
+    public Response<List<Student>> getLikeStudents(String studentId) {
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.like(Student::getStudentId,studentId);
+        Response<List<Student>> listResponse = new Response<>();
+        List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+        listResponse.setData(students);
+        return listResponse;
+    }
 }

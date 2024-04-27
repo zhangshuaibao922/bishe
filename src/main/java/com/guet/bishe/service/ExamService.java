@@ -49,4 +49,6 @@ public interface ExamService extends IService<Exam> {
     Response<List<Exam>> queryByExamName(String examName);
 
     Response<List<ExamDto>> scoreQueryByExamClass(String examClass);
+
+    Response<String> getModelClass(String examId);
 }

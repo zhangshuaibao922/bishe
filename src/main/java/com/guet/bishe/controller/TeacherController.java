@@ -110,9 +110,15 @@ public class TeacherController{
      * @param teacherId 主键
      * @return 是否成功
      */
-    @ApiOperation("通过主键删除数据")
+    @ApiOperation("")
     @DeleteMapping("{teacherId}")
     public ResponseEntity<Boolean> deleteById(@PathVariable String teacherId){
         return ResponseEntity.ok(teacherService.deleteByTeacherId(teacherId));
     }
+
+     @ApiOperation("")
+     @DeleteMapping("/deleteById/{id}")
+     public Response<Boolean> deleteByIdTeacher(@PathVariable Integer id){
+         return teacherService.deleteByIdTeacher(id);
+     }
 }

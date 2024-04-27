@@ -73,9 +73,26 @@ public class StudentController{
         return ResponseEntity.ok(studentService.deleteByStudentId(studentId));
     }
 
+    @ApiOperation("通过主键删除数据")
+    @DeleteMapping("/deleteStudentId/{id}")
+    public Response<Boolean> deleteByIdStudent(@PathVariable Integer id){
+        return studentService.delete(id);
+    }
+
     @ApiOperation("查询学生信息")
     @GetMapping("/getInfo/{studentId}")
     public Response<Student> getStudentInfo(@PathVariable String studentId){
         return studentService.getStudentInfo(studentId);
+    }
+
+    @ApiOperation("查询学生信息")
+    @GetMapping("/getAll")
+    public Response<List<Student>> getAllStudents(){
+        return studentService.getAll();
+    }
+    @ApiOperation("查询学生信息")
+    @GetMapping("/getLike/{studentId}")
+    public Response<List<Student>> getLikeStudents(@PathVariable String studentId){
+        return studentService.getLikeStudents(studentId);
     }
 }

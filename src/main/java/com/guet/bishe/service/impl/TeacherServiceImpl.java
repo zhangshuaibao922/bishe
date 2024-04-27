@@ -110,11 +110,23 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     @Override
     public Response<List<Teacher>> selectByName(String teacherName) {
         LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        teacherLambdaQueryWrapper.like(Teacher::getTeacherName, teacherName);
+        teacherLambdaQueryWrapper.like(Teacher::getTeacherId, teacherName);
         List<Teacher> teachers = teacherMapper.selectList(teacherLambdaQueryWrapper);
         Response<List<Teacher>> listResponse = new Response<>();
         listResponse.setData(teachers);
         return listResponse;
+    }
+
+    @Override
+    public Response<Boolean> deleteByIdTeacher(Integer id) {
+        int i = teacherMapper.deleteById(id);
+        Response<Boolean> response = new Response<>();
+        if(i>0){
+            response.setData(true);
+        }else {
+            response.setData(false);
+        }
+        return response;
     }
 
 }

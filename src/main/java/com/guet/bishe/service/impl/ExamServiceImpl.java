@@ -218,4 +218,15 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
         }
         return listResponse;
     }
+
+    @Override
+    public Response<String> getModelClass(String examId) {
+        LambdaQueryWrapper<Exam> examLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        examLambdaQueryWrapper.eq(Exam::getExamId,examId);
+        Exam exam = examMapper.selectOne(examLambdaQueryWrapper);
+        Response<String> integerResponse = new Response<>();
+        integerResponse.setData(exam.getPaperClassId());
+        integerResponse.setMessage("查询成功");
+        return integerResponse;
+    }
 }
