@@ -36,4 +36,7 @@ public class LessonDto {
     /** 教师ID */
     @ApiModelProperty(name = "教师名称",notes = "")
     public String teacherName ;
+    /** 课程ID */
+    @ApiModelProperty(name = "学院ID",notes = "")
+    public String collegeId ;
 }

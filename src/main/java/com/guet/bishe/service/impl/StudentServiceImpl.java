@@ -2,10 +2,7 @@ package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.guet.bishe.entity.Choose;
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Student;
-import com.guet.bishe.entity.StudentInfo;
+import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.ChooseMapper;
 import com.guet.bishe.mapper.StudentMapper;
 import com.guet.bishe.service.StudentService;
@@ -131,6 +128,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         studentLambdaQueryWrapper.like(Student::getStudentId,studentId);
         Response<List<Student>> listResponse = new Response<>();
         List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+        listResponse.setData(students);
+        return listResponse;
+    }
+
+    @Override
+    public Response<List<Student>> queryAllByCollegeId(String collegeId) {
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.eq(Student::getCollegeId,collegeId);
+        List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+        Response<List<Student>> listResponse = new Response<>();
         listResponse.setData(students);
         return listResponse;
     }

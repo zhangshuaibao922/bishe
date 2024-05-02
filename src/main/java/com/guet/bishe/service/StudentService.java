@@ -3,6 +3,7 @@ package com.guet.bishe.service;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.entity.StudentInfo;
+import com.guet.bishe.entity.Teacher;
 
 import java.util.List;
 
@@ -50,4 +51,6 @@ public interface StudentService{
     Response<Boolean> delete(Integer id);
 
     Response<List<Student>> getLikeStudents(String studentId);
+
+    Response<List<Student>> queryAllByCollegeId(String collegeId);
 }

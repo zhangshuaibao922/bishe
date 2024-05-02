@@ -55,6 +55,12 @@ public class TeacherController{
          return teacherService.queryAll();
      }
 
+     @ApiOperation("返回教师列表")
+     @GetMapping("/byCollegeId/{collegeId}")
+     public Response<List<Teacher>> queryAllByCollegeId(@PathVariable String collegeId)
+     {
+         return teacherService.queryAllByCollegeId(collegeId);
+     }
     /**
      * 分页查询
      *

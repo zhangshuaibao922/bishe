@@ -121,12 +121,22 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     public Response<Boolean> deleteByIdTeacher(Integer id) {
         int i = teacherMapper.deleteById(id);
         Response<Boolean> response = new Response<>();
-        if(i>0){
+        if (i > 0) {
             response.setData(true);
-        }else {
+        } else {
             response.setData(false);
         }
         return response;
+    }
+
+    @Override
+    public Response<List<Teacher>> queryAllByCollegeId(String collegeId) {
+        LambdaQueryWrapper<Teacher> eq = new LambdaQueryWrapper<Teacher>().eq(Teacher::getCollegeId, collegeId);
+        List<Teacher> teacherList = teacherMapper.selectList(eq);
+        Response<List<Teacher>> listResponse = new Response<>();
+        listResponse.setMessage("查询成功");
+        listResponse.setData(teacherList);
+        return listResponse;
     }
 
 }

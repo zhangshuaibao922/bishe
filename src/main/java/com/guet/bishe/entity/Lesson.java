@@ -34,15 +34,18 @@ public class Lesson implements Serializable{
     /** 学分 */
     @ApiModelProperty(name = "学分",notes = "")
     public String score ;
-    /** 创建时间 */
+     /** 创建时间 */
     @ApiModelProperty(name = "创建时间",notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField(fill = FieldFill.INSERT)
     public String createTime ;
-    /** 更新时间 */
+     /** 更新时间 */
     @ApiModelProperty(name = "更新时间",notes = "")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField(fill = FieldFill.INSERT_UPDATE)
     public String updateTime ;
 
-}
+     /** 课程ID */
+     @ApiModelProperty(name = "学院ID",notes = "")
+     public String collegeId ;
+ }

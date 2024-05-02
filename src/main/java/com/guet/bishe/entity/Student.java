@@ -23,8 +23,8 @@ public class Student implements Serializable{
     @TableId(value = "id",type= IdType.AUTO)
     public Integer id ;
     /** 所在班级ID */
-    @ApiModelProperty(name = "所在班级ID",notes = "")
-    public String classId ;
+    @ApiModelProperty(name = "学院ID",notes = "")
+    public String collegeId ;
     /** 学生ID */
     @ApiModelProperty(name = "学生ID",notes = "")
     public String studentId ;

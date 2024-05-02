@@ -44,6 +44,11 @@ public class LessonController{
      public Response<List<LessonDto>> queryAll() {
          return lessonsService.queryAll();
      }
+     @ApiOperation("返回课程列表")
+     @GetMapping("/byCollegeId/{collegeId}")
+     public Response<List<LessonDto>> queryAllByCollegeId(@PathVariable String collegeId){
+         return lessonsService.queryAllByCollegeId(collegeId);
+     }
 
      @ApiOperation("返回课程列表")
      @GetMapping("/all/{teacherId}")

@@ -49,4 +49,6 @@ public interface LessonService extends IService<Lesson> {
     Response<List<LessonDto>> queryAll();
 
     Response<List<LessonDto>> queryAllByTeacherId(String teacherId);
+
+    Response<List<LessonDto>> queryAllByCollegeId(String collegeId);
 }

@@ -4,6 +4,7 @@ package com.guet.bishe.controller;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.entity.StudentInfo;
+import com.guet.bishe.entity.Teacher;
 import com.guet.bishe.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,12 @@ public class StudentController{
     public ResponseEntity<List<Student>> queryById(@RequestBody StudentInfo studentInfo){
         return ResponseEntity.ok(studentService.queryByStudentId(studentInfo));
     }
-
+    @ApiOperation("返回教师列表")
+    @GetMapping("/byCollegeId/{collegeId}")
+    public Response<List<Student>> queryAllByCollegeId(@PathVariable String collegeId)
+    {
+        return studentService.queryAllByCollegeId(collegeId);
+    }
     /** 
      * 新增数据
      *
