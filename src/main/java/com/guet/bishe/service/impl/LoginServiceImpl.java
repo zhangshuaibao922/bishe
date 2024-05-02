@@ -39,7 +39,9 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
         }
         if("student".equals(loginDto.identity)){
             LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            Student student = studentMapper.selectOne(studentLambdaQueryWrapper.eq(Student::getStudentId, loginDto.username).eq(Student::getStudentPassword,loginDto.password));
+            Student student = studentMapper.selectOne(studentLambdaQueryWrapper.eq(Student::getStudentId, loginDto.username)
+                    .eq(Student::getStudentPassword,loginDto.password)
+                    .eq(Student::getStatus,"1"));
             if(student!=null){
                 User user = new User();
                 user.setName(student.getStudentName());
@@ -59,7 +61,9 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
 
         } else if ("teacher".equals(loginDto.identity)) {
             LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, loginDto.username).eq(Teacher::getTeacherPassword, loginDto.password));
+            Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, loginDto.username)
+                    .eq(Teacher::getTeacherPassword, loginDto.password)
+                    .eq(Teacher::getStatus,"1"));
             if(teacher!=null){
                 User user = new User();
                 user.setName(teacher.getTeacherName());

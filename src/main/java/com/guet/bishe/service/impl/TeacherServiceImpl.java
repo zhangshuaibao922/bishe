@@ -34,7 +34,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      */
     public List<Teacher> queryByTeacherId(String teacherId) {
         LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        return teacherMapper.selectList(teacherLambdaQueryWrapper.like(Teacher::getTeacherId, teacherId));
+        return teacherMapper.selectList(teacherLambdaQueryWrapper.like(Teacher::getTeacherId, teacherId).eq(Teacher::getStatus,"1"));
     }
 
     /**

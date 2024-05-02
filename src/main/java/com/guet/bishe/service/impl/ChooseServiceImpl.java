@@ -33,7 +33,7 @@ public class ChooseServiceImpl extends ServiceImpl<ChooseMapper, Choose> impleme
      */
     public List<Student> queryById(String  studentId){
         LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        studentLambdaQueryWrapper.like(Student::getStudentId,studentId);
+        studentLambdaQueryWrapper.like(Student::getStudentId,studentId).eq(Student::getStatus,"1");
         return studentMapper.selectList(studentLambdaQueryWrapper);
     }
 
