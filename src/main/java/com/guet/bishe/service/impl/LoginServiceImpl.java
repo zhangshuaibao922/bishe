@@ -3,6 +3,7 @@ package com.guet.bishe.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.guet.bishe.Utils.MD5;
 import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.AuthorityMapper;
 import com.guet.bishe.mapper.LoginMapper;
@@ -40,13 +41,13 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
         if("student".equals(loginDto.identity)){
             LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
             Student student = studentMapper.selectOne(studentLambdaQueryWrapper.eq(Student::getStudentId, loginDto.username)
-                    .eq(Student::getStudentPassword,loginDto.password)
+                    .eq(Student::getStudentPassword,MD5.encrypt3ToMD5(loginDto.password))
                     .eq(Student::getStatus,"1"));
             if(student!=null){
                 User user = new User();
                 user.setName(student.getStudentName());
                 user.setUsername(student.getStudentId());
-                user.setOldPassword(student.getStudentPassword());
+                user.setOldPassword("");
                 user.setAuthorityRole(getAuth(student.getAuthorityId()));
                 user.setDescription(student.getDescription());
                 user.setIdentity(loginDto.identity);
@@ -62,13 +63,13 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
         } else if ("teacher".equals(loginDto.identity)) {
             LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
             Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, loginDto.username)
-                    .eq(Teacher::getTeacherPassword, loginDto.password)
+                    .eq(Teacher::getTeacherPassword, MD5.encrypt3ToMD5(loginDto.password))
                     .eq(Teacher::getStatus,"1"));
             if(teacher!=null){
                 User user = new User();
                 user.setName(teacher.getTeacherName());
                 user.setUsername(teacher.getTeacherId());
-                user.setOldPassword(teacher.getTeacherPassword());
+                user.setOldPassword("");
                 user.setAuthorityRole(getAuth(teacher.getAuthorityId()));
                 user.setDescription(teacher.getDescription());
                 user.setIdentity(loginDto.identity);
@@ -95,9 +96,12 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
     public String updateByUser(User user) {
         if("student".equals(user.identity)){
             LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            Student student = studentMapper.selectOne(studentLambdaQueryWrapper.eq(Student::getStudentId, user.getUsername()).eq(Student::getStudentPassword,user.getOldPassword()));
+
+            Student student = studentMapper.selectOne(studentLambdaQueryWrapper
+                    .eq(Student::getStudentId, user.getUsername())
+                    .eq(Student::getStudentPassword, MD5.encrypt3ToMD5(user.getOldPassword())));
             if(student!=null){
-                student.setStudentPassword(user.getNewPassword());
+                student.setStudentPassword(MD5.encrypt3ToMD5(user.getNewPassword()));
                 studentMapper.update(student,studentLambdaQueryWrapper.eq(Student::getStudentId,user.getUsername()));
                 return "success";
             }else {
@@ -105,9 +109,11 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, LoginDto> impleme
             }
         } else if ("teacher".equals(user.identity)) {
             LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper.eq(Teacher::getTeacherId, user.getUsername()).eq(Teacher::getTeacherPassword, user.getOldPassword()));
+            Teacher teacher = teacherMapper.selectOne(teacherLambdaQueryWrapper
+                    .eq(Teacher::getTeacherId, user.getUsername())
+                    .eq(Teacher::getTeacherPassword, MD5.encrypt3ToMD5(user.getOldPassword())));
             if(teacher!=null){
-                teacher.setTeacherPassword(user.getNewPassword());
+                teacher.setTeacherPassword(MD5.encrypt3ToMD5(user.getNewPassword()));
                 teacherMapper.update(teacher,teacherLambdaQueryWrapper.eq(Teacher::getTeacherId,user.getUsername()));
                 return "success";
             }else {

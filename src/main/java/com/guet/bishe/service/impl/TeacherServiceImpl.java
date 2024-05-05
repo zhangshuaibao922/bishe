@@ -2,6 +2,7 @@ package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.guet.bishe.Utils.MD5;
 import com.guet.bishe.entity.Lesson;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Teacher;
@@ -68,6 +69,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      * @return 实例对象
      */
     public boolean insert(Teacher teacher) {
+        String s = MD5.encrypt3ToMD5(teacher.getTeacherPassword());
+        teacher.setTeacherPassword(s);
         int insert = teacherMapper.insert(teacher);
         return insert > 0;
     }
