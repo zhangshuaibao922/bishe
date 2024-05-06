@@ -219,7 +219,7 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
                 .eq(Setting::getExamSet,examSet);
         List<Setting> settings = settingMapper.selectList(settingLambdaQueryWrapper);
         ArrayList<SettingDesDto> settingDesDtos = new ArrayList<>();
-        if(settings.get(0).getDescription()==null){
+        if(settings.size()==0){
             for (int i = 0; i < Integer.parseInt(model.getModelNumber()); i++) {
                 SettingDesDto settingDesDto = new SettingDesDto();
                 settingDesDto.setExamSet(examSet);
@@ -236,8 +236,11 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
                 SettingDesDto settingDesDto = new SettingDesDto();
                 settingDesDto.setExamSet(examSet);
                 settingDesDto.setAnswerId(String.valueOf(i+1));
-                settingDesDto.setDescription(list.get(i));
-
+                if(list.get(i)==null){
+                    settingDesDto.setDescription("");
+                }else {
+                    settingDesDto.setDescription(list.get(i));
+                }
                 settingDesDtos.add(settingDesDto);
             }
             listResponse.setData(settingDesDtos);
