@@ -4,6 +4,9 @@ server:
 
 #数据库
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://119.23.60.131:3306/bishe?characterEncoding=utf-8
