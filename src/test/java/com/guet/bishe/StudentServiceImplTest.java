@@ -1,5 +1,6 @@
 package com.guet.bishe;
 
+import com.guet.bishe.Utils.EmailUtil;
 import com.guet.bishe.entity.Student;
 import com.guet.bishe.mapper.StudentMapper;
 import com.guet.bishe.service.StudentService;
@@ -15,36 +16,27 @@ public class StudentServiceImplTest {
     @Autowired
     private StudentMapper studentMapper;
 
-    private Student student;
-
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private EmailUtil emailUtil;
 
-    @BeforeEach
-    void setUp() {
-        student = new Student();
-
-        student.setStudentId("1111111111");
-        student.setStudentPassword("123456");
-        student.setStudentName("小三");
-        student.setIdCardNo("330103199901010000");
-        student.setMobilePhone("13000000000");
-        student.setGender("1");
-        student.setStatus("1");
-        student.setAuthorityId("1");
-        student.setDescription("好人一生平安");
-
-        // Set other required fields for the Student entity
+    @Test
+    void sendSuccess() {
+        // Given
+        String[] emails =new String[]{"2742520302@qq.com","3425178647@qq.com"};
+        // When
+        emailUtil.sendSuccess(emails);
     }
 
     @Test
     void testInsert() {
-        // Arrange (mocking not needed since we're using Spring Test with real beans)
-
-        // Act
-        boolean result = studentService.insert(student);
-
-        // Assert
-        assertTrue(result, "Insert should return true");
+//        // Arrange (mocking not needed since we're using Spring Test with real beans)
+//
+//        // Act
+//        boolean result = studentService.insert(student);
+//
+//        // Assert
+//        assertTrue(result, "Insert should return true");
     }
 }

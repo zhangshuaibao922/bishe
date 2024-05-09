@@ -16,7 +16,7 @@ import java.io.Serializable;
 @ApiModel(value = "教师",description = "")
 @TableName("teacher")
 @Data
-public class Teacher implements Serializable{
+public class TeacherCreateDto implements Serializable{
     /** 主键 */
     @ApiModelProperty(name = "主键",notes = "")
     @TableId(value = "id",type= IdType.AUTO)
@@ -39,6 +39,8 @@ public class Teacher implements Serializable{
     /** 手机号 */
     @ApiModelProperty(name = "邮箱",notes = "")
     public String teacherEmail;
+    @ApiModelProperty(name = "验证码",notes = "")
+    public String code;
     /** 权限id */
     @ApiModelProperty(name = "权限id",notes = "")
     public String authorityId ;

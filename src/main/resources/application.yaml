@@ -20,3 +20,6 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+email:
+  code: mdrocyjqsmkqdacd
+  user: 2104847386@qq.com

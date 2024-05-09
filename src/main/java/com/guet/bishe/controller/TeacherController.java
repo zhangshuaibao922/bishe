@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.TeacherCreateDto;
 import com.guet.bishe.service.TeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -94,7 +95,7 @@ public class TeacherController{
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<Boolean> add(@RequestBody Teacher teacher){
+    public ResponseEntity<Boolean> add(@RequestBody TeacherCreateDto teacher){
         return ResponseEntity.ok(teacherService.insert(teacher));
     }
 

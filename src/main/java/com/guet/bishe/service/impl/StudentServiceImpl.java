@@ -2,6 +2,7 @@ package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.guet.bishe.Utils.EmailUtil;
 import com.guet.bishe.Utils.MD5;
 import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.ChooseMapper;
@@ -28,6 +29,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private StudentMapper studentMapper;
     @Autowired
     private ChooseMapper chooseMapper;
+    @Autowired
+    private EmailUtil emailUtil;
     /** 
      * 通过ID查询单条数据 
      *
@@ -58,12 +61,27 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     /**
      * 新增数据
      *
-     * @param student 实例对象
+     * @param studentCreateDto 实例对象
      * @return 实例对象
      */
-    public boolean insert(Student student){
-        String s = MD5.encrypt3ToMD5(student.getStudentPassword());
-        student.setStudentPassword(s);
+    public boolean insert(StudentCreateDto studentCreateDto){
+        Integer code = EmailUtil.timedCache.get(studentCreateDto.getStudentEmail());
+        if (!StrUtil.equals(code.toString(),studentCreateDto.getCode())){
+            return false;
+        }
+        String s = MD5.encrypt3ToMD5(studentCreateDto.getStudentPassword());
+        studentCreateDto.setStudentPassword(s);
+        Student student = new Student();
+        student.setCollegeId(studentCreateDto.getCollegeId());
+        student.setStudentId(studentCreateDto.getStudentId());
+        student.setStudentName(studentCreateDto.getStudentName());
+        student.setStudentPassword(studentCreateDto.getStudentPassword());
+        student.setIdCardNo(studentCreateDto.getIdCardNo());
+        student.setStudentEmail(studentCreateDto.getStudentEmail());
+        student.setGender(studentCreateDto.getGender());
+        student.setStatus(studentCreateDto.getStatus());
+        student.setAuthorityId(studentCreateDto.getAuthorityId());
+        student.setDescription(studentCreateDto.getDescription());
         return studentMapper.insert(student)>0;
     }
 

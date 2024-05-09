@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guet.bishe.entity.Response;
 import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.TeacherCreateDto;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface TeacherService extends IService<Teacher> {
      * @param teacher 实例对象
      * @return 实例对象
      */
-    boolean insert(Teacher teacher);
+    boolean insert(TeacherCreateDto teacher);
     /**
      * 更新数据
      *

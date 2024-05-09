@@ -2,10 +2,9 @@ package com.guet.bishe.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.guet.bishe.Utils.EmailUtil;
 import com.guet.bishe.Utils.MD5;
-import com.guet.bishe.entity.Lesson;
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.*;
 import com.guet.bishe.mapper.TeacherMapper;
 import com.guet.bishe.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +67,24 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      * @param teacher 实例对象
      * @return 实例对象
      */
-    public boolean insert(Teacher teacher) {
-        String s = MD5.encrypt3ToMD5(teacher.getTeacherPassword());
-        teacher.setTeacherPassword(s);
+    public boolean insert(TeacherCreateDto teacherCreateDto) {
+        Integer code = EmailUtil.timedCache.get(teacherCreateDto.getTeacherEmail());
+        if (!StrUtil.equals(code.toString(),teacherCreateDto.getCode())){
+            return false;
+        }
+        String s = MD5.encrypt3ToMD5(teacherCreateDto.getTeacherPassword());
+        teacherCreateDto.setTeacherPassword(s);
+
+        Teacher teacher = new Teacher();
+        teacher.setCollegeId(teacherCreateDto.getCollegeId());
+        teacher.setTeacherId(teacherCreateDto.getTeacherId());
+        teacher.setTeacherName(teacherCreateDto.getTeacherName());
+        teacher.setTeacherPassword(teacherCreateDto.getTeacherPassword());
+        teacher.setIdCardNo(teacherCreateDto.getIdCardNo());
+        teacher.setTeacherEmail(teacherCreateDto.getTeacherEmail());
+        teacher.setStatus(teacherCreateDto.getStatus());
+        teacher.setAuthorityId(teacherCreateDto.getAuthorityId());
+        teacher.setDescription(teacherCreateDto.getDescription());
         int insert = teacherMapper.insert(teacher);
         return insert > 0;
     }

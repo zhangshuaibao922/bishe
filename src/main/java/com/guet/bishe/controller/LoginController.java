@@ -1,5 +1,6 @@
 package com.guet.bishe.controller;
 
+import com.guet.bishe.Utils.EmailUtil;
 import com.guet.bishe.entity.Authority;
 import com.guet.bishe.entity.LoginDto;
 import com.guet.bishe.entity.Response;
@@ -9,10 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 登录功能接口
@@ -26,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private EmailUtil emailUtil;
 
     /**
      * 登录
@@ -37,6 +37,21 @@ public class LoginController {
     @PostMapping("/login")
     public Response<User> add(@RequestBody LoginDto loginDto) {
         return loginService.login(loginDto);
+    }
+
+    /**
+     * 发送验证码
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation("验证码")
+    @GetMapping("/verificationCode/{email}")
+    public Response<Boolean> verificationCode(@PathVariable String email) {
+        emailUtil.sendRegisterEmail(email);
+        Response<Boolean> response = new Response<>();
+        response.setData(true);
+        return response;
     }
 
     /**

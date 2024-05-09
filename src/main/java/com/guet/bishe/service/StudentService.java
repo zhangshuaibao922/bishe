@@ -1,9 +1,6 @@
 package com.guet.bishe.service;
 
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Student;
-import com.guet.bishe.entity.StudentInfo;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.*;
 
 import java.util.List;
 
@@ -28,7 +25,7 @@ public interface StudentService{
      * @param student 实例对象
      * @return 实例对象
      */
-    boolean insert(Student student);
+    boolean insert(StudentCreateDto student);
     /** 
      * 更新数据
      *

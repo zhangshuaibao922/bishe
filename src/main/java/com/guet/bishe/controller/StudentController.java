@@ -1,10 +1,7 @@
 package com.guet.bishe.controller;
 
 
-import com.guet.bishe.entity.Response;
-import com.guet.bishe.entity.Student;
-import com.guet.bishe.entity.StudentInfo;
-import com.guet.bishe.entity.Teacher;
+import com.guet.bishe.entity.*;
 import com.guet.bishe.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +49,7 @@ public class StudentController{
      */
     @ApiOperation("新增数据")
     @PostMapping
-    public ResponseEntity<Boolean> add(@RequestBody Student student){
+    public ResponseEntity<Boolean> add(@RequestBody StudentCreateDto student){
         return ResponseEntity.ok(studentService.insert(student));
     }
     /** 
