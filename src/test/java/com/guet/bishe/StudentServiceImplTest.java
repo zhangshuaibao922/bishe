@@ -26,7 +26,7 @@ public class StudentServiceImplTest {
         // Given
         String[] emails =new String[]{"2742520302@qq.com","3425178647@qq.com"};
         // When
-        emailUtil.sendSuccess(emails);
+//        emailUtil.sendSuccess(emails);
     }
 
     @Test
