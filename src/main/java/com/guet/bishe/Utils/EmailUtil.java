@@ -103,7 +103,7 @@ public class EmailUtil {
                         // 设置邮件发送日期
                         mimeMessageHelper.setSentDate(new Date());
                         // 设置邮件的正文
-                        String emailContent = lessonName + "的" + examName + "考试已经结束了，请去查询你的承接。\n<a href=\"http://localhost:9999/\">点击这里</a>查看。";
+                        String emailContent = lessonName + "的" + examName + "考试已经结束了，请去查询你的成绩。\n<a href=\"http://localhost:9999/\">点击这里</a>查看。";
                         mimeMessageHelper.setText(emailContent,true);
                         javaMailSender.send(mimeMessage);
                     } catch (MessagingException e) {
