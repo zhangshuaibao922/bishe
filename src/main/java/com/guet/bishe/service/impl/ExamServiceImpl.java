@@ -40,6 +40,10 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     private EmailUtil emailUtil;
     @Autowired
     private LessonMapper lesserMapper;
+    @Autowired
+    private SettingMapper settingMapper;
+    @Autowired
+    private TeacherMapper teacherMapper;
 
     /**
      * 通过ID查询单条数据
@@ -72,22 +76,43 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
      * @return 实例对象
      */
     public boolean update(Exam exam) {
+
         //1. 根据条件动态更新
         LambdaQueryWrapper<Exam> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Exam::getExamId, exam.getExamId());
-        LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        chooseLambdaQueryWrapper.eq(Choose::getLessonId,exam.getLessonId());
-        List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
-        List<String> list = chooses.stream().map(Choose::getStudentId).toList();
-        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        studentLambdaQueryWrapper.in(Student::getStudentId,list);
-        List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
-        List<String> list1 = students.stream().map(Student::getStudentEmail).toList();
-        String[] array = list1.toArray(new String[list1.size()]);
-        LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lessonLambdaQueryWrapper.eq(Lesson::getLessonId,exam.getLessonId());
-        Lesson lesson = lesserMapper.selectOne(lessonLambdaQueryWrapper);
-        emailUtil.sendSuccess(array,exam.getExamName(),lesson.getLessonName());
+        examMapper.update(exam, lambdaQueryWrapper);
+
+        if(exam.getIsDelete()==1){
+            LambdaQueryWrapper<Choose> chooseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            chooseLambdaQueryWrapper.eq(Choose::getLessonId,exam.getLessonId());
+            List<Choose> chooses = chooseMapper.selectList(chooseLambdaQueryWrapper);
+            List<String> list = chooses.stream().map(Choose::getStudentId).toList();
+            LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            studentLambdaQueryWrapper.in(Student::getStudentId,list);
+            List<Student> students = studentMapper.selectList(studentLambdaQueryWrapper);
+            List<String> list1 = students.stream().map(Student::getStudentEmail).toList();
+            String[] array = list1.toArray(new String[list1.size()]);
+            LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lessonLambdaQueryWrapper.eq(Lesson::getLessonId,exam.getLessonId());
+            Lesson lesson = lesserMapper.selectOne(lessonLambdaQueryWrapper);
+            emailUtil.sendSuccess(array,exam.getExamName(),lesson.getLessonName());
+        }else if(exam.getIsDelete()==2){
+            LambdaQueryWrapper<Setting> settingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            settingLambdaQueryWrapper.eq(Setting::getExamSet,exam.getExamSet());
+
+            List<Setting> settings = settingMapper.selectList(settingLambdaQueryWrapper);
+            List<String> list = settings.stream().map(Setting::getTeacherId).toList();
+            LambdaQueryWrapper<Teacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            teacherLambdaQueryWrapper.in(Teacher::getTeacherId,list);
+            List<Teacher> teachers = teacherMapper.selectList(teacherLambdaQueryWrapper);
+            List<String> list1 = teachers.stream().map(Teacher::getTeacherEmail).toList();
+            String[] array = list1.toArray(new String[list1.size()]);
+            LambdaQueryWrapper<Lesson> lessonLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lessonLambdaQueryWrapper.eq(Lesson::getLessonId,exam.getLessonId());
+            Lesson lesson = lesserMapper.selectOne(lessonLambdaQueryWrapper);
+            emailUtil.sendSuccessTeacher(array,exam.getExamName(),lesson.getLessonName());
+        }
+
         //2. 设置主键，并更新
         return examMapper.update(exam, lambdaQueryWrapper) > 0;
     }
@@ -195,6 +220,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
         LambdaQueryWrapper<Exam> examLambdaQueryWrapper = new LambdaQueryWrapper<>();
         examLambdaQueryWrapper
                 .eq(Exam::getExamClass, examClass)
+                .eq(Exam::getIsDelete, 2)
                 .orderByDesc(Exam::getExamData)
                 .ne(Exam::getExamSet, "")
                 .ne(Exam::getPaperClassId, "");
