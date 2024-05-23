@@ -92,6 +92,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return 实例对象
      */
     public boolean update(Student student){
+        String s = MD5.encrypt3ToMD5(student.getStudentPassword());
+        student.setStudentPassword(s);
         //1. 根据条件动态更新
         LambdaQueryWrapper<Student> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Student::getStudentId,student.studentId);
@@ -159,5 +161,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Response<List<Student>> listResponse = new Response<>();
         listResponse.setData(students);
         return listResponse;
+    }
+
+    @Override
+    public boolean insertTeacher(Student student) {
+        String s = MD5.encrypt3ToMD5(student.getStudentPassword());
+        student.setStudentPassword(s);
+        if (studentMapper.insert(student)>0){
+            return true;
+        }
+        return false;
     }
 }

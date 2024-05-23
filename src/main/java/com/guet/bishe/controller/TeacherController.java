@@ -98,6 +98,11 @@ public class TeacherController{
     public ResponseEntity<Boolean> add(@RequestBody TeacherCreateDto teacher){
         return ResponseEntity.ok(teacherService.insert(teacher));
     }
+     @ApiOperation("新增数据")
+     @PostMapping("/insert")
+     public ResponseEntity<Boolean> insert(@RequestBody Teacher teacher){
+         return ResponseEntity.ok(teacherService.insertTeacher(teacher));
+     }
 
     /**
      * 更新数据

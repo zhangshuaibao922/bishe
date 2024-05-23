@@ -152,8 +152,8 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
             examLambdaQueryWrapper
                     .eq(Exam::getExamClass, examClass)
                     .in(Exam::getLessonId,lessonIds)
-                    .eq(Exam::getIsDelete,1)
-                    .orderByDesc(Exam::getExamData);
+                    .in(Exam::getIsDelete,1,3)
+                    .orderByAsc(Exam::getIsDelete);
         }
         List<Exam> exams = examMapper.selectList(examLambdaQueryWrapper);
         Response<List<ExamDto>> listResponse = new Response<>();

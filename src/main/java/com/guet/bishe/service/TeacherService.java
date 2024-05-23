@@ -62,4 +62,6 @@ public interface TeacherService extends IService<Teacher> {
     Response<Boolean> deleteByIdTeacher(Integer id);
 
     Response<List<Teacher>> queryAllByCollegeId(String collegeId);
+
+    boolean insertTeacher(Teacher teacher);
 }

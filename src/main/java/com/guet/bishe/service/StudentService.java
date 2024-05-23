@@ -50,4 +50,6 @@ public interface StudentService{
     Response<List<Student>> getLikeStudents(String studentId);
 
     Response<List<Student>> queryAllByCollegeId(String collegeId);
+
+    boolean insertTeacher(Student student);
 }

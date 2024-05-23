@@ -97,6 +97,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
      */
     public boolean update(Teacher teacher) {
         //1. 根据条件动态更新
+        String s = MD5.encrypt3ToMD5(teacher.getTeacherPassword());
+        teacher.setTeacherPassword(s);
         //2. 设置主键，并更新
         int update = teacherMapper.updateById(teacher);
         return update > 0;
@@ -154,6 +156,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         listResponse.setMessage("查询成功");
         listResponse.setData(teacherList);
         return listResponse;
+    }
+
+    @Override
+    public boolean insertTeacher(Teacher teacher) {
+        String s = MD5.encrypt3ToMD5(teacher.getTeacherPassword());
+        teacher.setTeacherPassword(s);
+        if (teacherMapper.insert(teacher)>0){
+            return true;
+        }
+        return false;
     }
 
 }
