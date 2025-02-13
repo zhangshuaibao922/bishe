@@ -24,9 +24,9 @@ import java.io.InputStream;
 public class OssImageUploadController {
 
     private static final String endpoint = "https://oss-cn-hongkong.aliyuncs.com";
-    private static final String accessKeyId = "LTAI5tNmSxaPFBVcCbVi5VSV";
-    private static final String accessKeySecret = "y0d3yr6Q0889ZjCvCascrMzYG6UMOO";
-    private static final String bucketName = "bishe-zhangshuaibao922";
+    private static final String accessKeyId = "";
+    private static final String accessKeySecret = "";
+    private static final String bucketName = "";
     @Autowired
     PaperService paperService;
     @Autowired
